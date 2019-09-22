@@ -1,19 +1,19 @@
 import { Router, Response, Request } from "express"
 import db from './db'
-import { Service } from "../../models/service.model"
 import { logger } from "../../logger"
+import { Project } from "../../models/project.model"
 
 let toErrorString = (req:Request, error:string) => {
-    return "ServiceRouter ["+req.url+"] : "+error
+    return "ProjectsRouter ["+req.url+"] : "+error
 }
 
 var router: Router = Router()
 
 router.get("/all", (req: Request, res: Response) => {
-    db.getAll().then((services: Service[]) => {
+    db.getAll().then((projects: Project[]) => {
         res.status(200).json({
             success: true,
-            services: services
+            projects: projects
         })
     })
     .catch(err => {
@@ -25,13 +25,13 @@ router.get("/all", (req: Request, res: Response) => {
     })
 })
 
-router.get("/one/:serviceId", (req: Request, res: Response) => {
-    let serviceId: number = parseInt(req.params.serviceId)
-    if(Number.isInteger(serviceId) && serviceId) {
-        db.getById(serviceId).then((service: Service) => {
+router.get("/one/:projectId", (req: Request, res: Response) => {
+    let projectId: number = parseInt(req.params.projectId)
+    if(Number.isInteger(projectId) && projectId) {
+        db.getById(projectId).then((project: Project) => {
             res.status(200).json({
                 success: true,
-                service: service
+                project: project
             })
         }).catch((error) => {
             logger.error(toErrorString(req, error))
@@ -43,15 +43,15 @@ router.get("/one/:serviceId", (req: Request, res: Response) => {
     } else {
         res.status(200).json({
             success: false,
-            error: 'Invalid parameter : serviceId'
+            error: 'Invalid parameter : projectId'
         })
     }
 })
 
-router.get("/article/:serviceId", (req: Request, res: Response) => {
-    let serviceId: number = parseInt(req.params.serviceId)
-    if(Number.isInteger(serviceId) && serviceId) {
-        db.getArticleData(serviceId).then((article: string) => {
+router.get("/article/:projectId", (req: Request, res: Response) => {
+    let projectId: number = parseInt(req.params.projectId)
+    if(Number.isInteger(projectId) && projectId) {
+        db.getArticleData(projectId).then((article: string) => {
             res.status(200).json({
                 success: true,
                 article: article
@@ -66,16 +66,16 @@ router.get("/article/:serviceId", (req: Request, res: Response) => {
     } else {
         res.status(200).json({
             success: false,
-            error: 'Invalid parameter : serviceId'
+            error: 'Invalid parameter : projectId'
         })
     }
 })
 
-router.post("/createNew", (req: Request, res: Response) => {
-    let service: Service = req.body.service
-    if(service) {
-        db.createNew(service).then((newId:number) => {
-            res.status(200).json({success: true,newServiceId:newId})
+router.post("/new", (req: Request, res: Response) => {
+    let project: Project = req.body.project
+    if(project) {
+        db.createNew(project).then((newId:number) => {
+            res.status(200).json({success: true,newProjectId:newId})
         }).catch((error) => {
             logger.error(toErrorString(req, error))
             res.status(200).json({
@@ -86,15 +86,15 @@ router.post("/createNew", (req: Request, res: Response) => {
     } else {
         res.status(200).json({
             success: false,
-            error: 'Invalid parameter : service'
+            error: 'Invalid parameter : project'
         })
     }
 })
 
 router.post("/update", (req: Request, res: Response) => {
-    let service: Service = req.body.service
-    if(service) {
-        db.update(service).then(() => {
+    let project: Project = req.body.project
+    if(project) {
+        db.update(project).then(() => {
             res.status(200).json({success: true})
         }).catch((error) => {
             logger.error(toErrorString(req, error))
@@ -106,16 +106,16 @@ router.post("/update", (req: Request, res: Response) => {
     } else {
         res.status(200).json({
             success: false,
-            error: 'Invalid parameter : service'
+            error: 'Invalid parameter : project'
         })
     }
 })
 
 router.post("/updateArticleData", (req: Request, res: Response) => {
-    let serviceId: number = req.body.serviceId
+    let projectId: number = req.body.projectId
     let articleData: string = req.body.articleData
-    if(Number.isInteger(serviceId) && serviceId && articleData) {
-        db.updateArticleData(serviceId, articleData).then(() => {
+    if(Number.isInteger(projectId) && projectId && articleData) {
+        db.updateArticleData(projectId, articleData).then(() => {
             res.status(200).json({success: true})
         }).catch((error) => {
             logger.error(toErrorString(req, error))
@@ -127,15 +127,15 @@ router.post("/updateArticleData", (req: Request, res: Response) => {
     } else {
         res.status(200).json({
             success: false,
-            error: 'Invalid parameter : serviceId||articleData'
+            error: 'Invalid parameter : projectId||articleData'
         })
     }
 })
 
-router.post("/delete/:serviceId", (req: Request, res: Response) => {
-    let serviceId: number = parseInt(req.params.serviceId)
-    if(Number.isInteger(serviceId) && serviceId) {
-        db.delete(serviceId).then(() => {
+router.post("/delete/:projectId", (req: Request, res: Response) => {
+    let projectId: number = parseInt(req.params.projectId)
+    if(Number.isInteger(projectId) && projectId) {
+        db.delete(projectId).then(() => {
             res.status(200).json({success: true})
         }).catch((error) => {
             logger.error(toErrorString(req, error))
@@ -147,7 +147,7 @@ router.post("/delete/:serviceId", (req: Request, res: Response) => {
     } else {
         res.status(200).json({
             success: false,
-            error: 'Invalid parameter : serviceId'
+            error: 'Invalid parameter : projectId'
         })
     }
 })
