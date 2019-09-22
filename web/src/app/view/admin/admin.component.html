@@ -1,0 +1,19 @@
+<admin-login *ngIf="!adminS.login" (login_validation_success)="login_validation_success()"></admin-login>
+
+<ng-container *ngIf="adminS.login">
+     
+     <dashboard *ngIf="adminS.current_page==='dashboard'"></dashboard>
+
+     <admin-projects *ngIf="adminS.current_page==='projects'"></admin-projects>
+
+     <admin-services *ngIf="adminS.current_page==='services'"></admin-services>
+
+     <admin-project-categories *ngIf="adminS.current_page==='project-categories'"></admin-project-categories>
+
+     <admin-carousel *ngIf="adminS.current_page==='carousel'"></admin-carousel>
+
+     <admin-clients *ngIf="adminS.current_page==='clients'"></admin-clients>
+
+     <admin-gallery *ngIf="adminS.current_page==='gallery'"></admin-gallery>
+
+</ng-container>

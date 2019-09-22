@@ -1,0 +1,13 @@
+<div class="container">
+     <div class="row no-gutters">
+          <div class="col-4 offset-4" style="padding-top:3em;">
+               <h4>Admin Login</h4>
+               <hr />
+               <form>
+                    <input class="form-control" name="username" placeholder="Username" type="text" [(ngModel)]="username" />
+                    <input class="form-control mt-2" name="password" placeholder="******" type="password" [(ngModel)]="password" />
+                    <button class="btn btn-info mt-2" (click)="login_validate()">Login</button>
+               </form>
+          </div>
+     </div>
+</div>

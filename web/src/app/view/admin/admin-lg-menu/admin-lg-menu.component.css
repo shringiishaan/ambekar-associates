@@ -1,0 +1,18 @@
+.card, .card-body, .list-group {
+     border:none;
+     border-radius: 25px;
+}
+
+.list-group-item, .list-group-item-action {
+     background: #343A40 !important;
+     color:#bbb;
+}
+
+.list-group-item.active, .list-group-item-action.active {
+     background: #2d3338 !important;
+     border:none;
+}
+
+.list-group-item-action:hover {
+     color:#ddd;
+}

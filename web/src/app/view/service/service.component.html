@@ -1,0 +1,48 @@
+<navbar></navbar>
+<div class="container" *ngIf="service" style="padding-top:5em;">
+     <div class="row">
+          <div class="col-12 col-lg-9">
+               <div class="row">
+                    <div class="col-12">
+                         <h3 class="text-muted">{{service.title}}</h3>
+                    </div>
+               </div>
+               <hr />
+               <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                         <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                         <li class="breadcrumb-item"><a routerLink="/services">Services</a></li>
+                         <li class="breadcrumb-item active">{{service.title}}</li>
+                    </ol>
+               </nav>
+               <hr />
+               <div class="row">
+                    <div class="col-12" [innerHTML]="service.short_description"></div>
+               </div>
+               <div class="row mb-4 mt-3 text-center">
+                    <div class="col-12 col-lg-4 mx-auto" *ngFor="let image of service.images">
+                         <img class="img-thumbnail" src="{{rest.api_hostname}}/image/{{image.key}}" />
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-12" [innerHTML]="service.long_description"></div>
+               </div>
+          </div>
+          <div class="col-12 col-lg-3">
+               <h5 class="text-muted px-3 py-3 mt-4">Our Services</h5>
+               <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let service of appState.state.services" routerLink="/service/{{service.id}}">
+                         {{service.title}}
+                    </li>
+               </ul>
+               
+               <h5 class="text-muted px-3 py-3 mt-4">Other Projects</h5>
+               <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let project of appState.state.projects" routerLink="/project/{{project.id}}">
+                         {{project.title}}
+                    </li>
+               </ul>
+          </div>
+     </div>
+</div>
+<app-footer></app-footer>

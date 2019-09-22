@@ -1,0 +1,57 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" id="admin-navbar">
+
+     <a class="navbar-brand text-light ml-3" routerLink="/">Ambekar Associates</a>
+
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
+               <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Admin
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                         <a class="dropdown-item"
+                              routerLink="/">
+                                   Website
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='dashboard'?'active':''}}"
+                              routerLink="/admin/dashboard">
+                                   Dashboard
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='projects'?'active':''}}"
+                              routerLink="/admin/projects">
+                                   Projects
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='services'?'active':''}}"
+                              routerLink="/admin/services">
+                                   Services
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='project-categories'?'active':''}}"
+                              routerLink="/admin/project-categories">
+                                   Project Categories
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='gallery'?'active':''}}"
+                              routerLink="/admin/gallery">
+                                   Gallery
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='carousel'?'active':''}}"
+                              routerLink="/admin/carousel">
+                                   Carousel
+                         </a>
+                         <a class="dropdown-item {{adminS.current_page==='clients'?'active':''}}"
+                              routerLink="/admin/clients">
+                                   Clients
+                         </a>
+                    </div>
+               </li>
+               <li class="nav-item">
+                    <a class="nav-link" (click)="admin_logout()">Logout</a>
+               </li>
+          </ul>
+     </div>
+</nav>

@@ -1,0 +1,95 @@
+<top-navbar></top-navbar>
+<sub-navbar active_tab="projects"></sub-navbar>
+<sub-header header_text="Projects Showcase"></sub-header>
+
+
+<div class="container">
+     <div class="row pt-lg-3">
+          <div class="col-12">
+               <ul class="project-categories">
+                    <li [ngClass]="{'active':active_project_category===null}" class="" (click)="select_option('all')">
+                         All (124)
+                    </li>
+                    <li [ngClass]="{'active':active_project_category==='commercial'}" (click)="select_option('all')">
+                         Commercial (56)
+                    </li>
+                    <li [ngClass]="{'active':active_project_category==='industrial'}" (click)="select_option('all')">
+                         Industrial (43)
+                    </li>
+                    <li [ngClass]="{'active':active_project_category==='industrial'}" (click)="select_option('all')">
+                         Residential (39)
+                    </li>
+               </ul>
+          </div>
+     </div>
+     <div class="row pt-lg-4 project-list">
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+          <div class="col-3">
+               <img class="w-100" src="{{rest.api_hostname}}/image/{{stateService.state.projects[0].images[0].key}}" alt="..." />
+               <div class="description-text d-block text-center">December, 2018</div>
+          </div>
+     </div>
+</div>

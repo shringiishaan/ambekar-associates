@@ -1,0 +1,13 @@
+#carousel {
+     overflow: hidden;
+}
+
+.cr-container {
+     display: flex;
+}
+
+.cr-slide {
+     flex: 0 0 auto;
+     position: relative;
+     width: 100%;
+}

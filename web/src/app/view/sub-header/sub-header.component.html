@@ -1,0 +1,18 @@
+<div class="container-fluid">
+     <div class="row">
+          <div class="col-12">
+               <div class="container">
+                    <div class="row" *ngIf="!carousel">
+                         <div class="col-12 py-3">
+                              <h3 class="header-text">{{header_text}}</h3>
+                         </div>
+                    </div>
+                    <div class="row" *ngIf="carousel">
+                         <div class="col-12">
+                              <carousel></carousel>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>

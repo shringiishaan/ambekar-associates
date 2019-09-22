@@ -1,0 +1,108 @@
+<admin-navbar></admin-navbar>
+
+<div class="container-fluid" [ngStyle]="adminS.dashboard_container_style">
+     <div class="row">
+          <div class="d-none d-lg-block col-lg-2">
+               <admin-lg-menu [active_tab]="'clients'"></admin-lg-menu>
+          </div>
+          <div class="col-12 col-lg-10">
+               <div class="row mt-3">
+                    <div class="col-12">
+                         <button class="btn btn-sm btn-outline-info float-right" (click)="new_client_dialog_open()">
+                              <i class="fa fa-plus mr-1"></i>
+                              New Client
+                         </button>
+                         <h4 class="text-light">
+                              <i class="fa fa-users mr-2"></i>
+                              Manage Clients
+                         </h4>
+                    </div>
+               </div>
+               <div class="row mt-4">
+                    <div class="col-12 col-md-6 col-lg-3" *ngFor="let client of appState.state.clients">
+                         <div class="card card-body p-2">
+                              <img src="{{rest.api_hostname}}/image/{{client.image_key}}" style="max-height:15em;" />
+                              <div class="row">
+                                   <div class="col-12">
+                                        <i class="fa fa-trash text-warning float-right" style="cursor: pointer;font-size:1.5em;" (click)="delete_client_dialog_open(client)"></i>
+                                        <i class="fa fa-edit text-info float-right mr-2 mt-1" style="cursor: pointer;font-size:1.4em;" (click)="edit_client_dialog_open(client)"></i>
+                                        <small class="text-muted">Client Name</small>
+                                        <p class="text-dark">{{client.name}}</p>
+                                   </div>
+                              </div>
+                              <div class="row">
+                                   <div class="col-12">
+                                        <small class="text-muted">Image Key</small>
+                                        <p class="text-dark">{{client.image_key}}</p>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+
+<p-dialog 
+     [(visible)]="new_client_dialog_visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="150"
+     [width]="300"
+     *ngIf="new_client">
+
+     <p-header>
+          New Client
+     </p-header>
+
+     <input class="form-control" type="text" [(ngModel)]="new_client.name" />
+
+     <input class="form-control mt-2" type="text" [(ngModel)]="new_client.image_key" />
+
+     <button class="btn btn-sm btn-info mt-3" (click)="new_client_submit()">Create</button>
+
+</p-dialog>
+
+<p-dialog 
+     [(visible)]="edit_client_dialog_visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="150"
+     [width]="300"
+     *ngIf="edit_client">
+
+     <p-header>
+          Edit Client
+     </p-header>
+
+     <input class="form-control" type="text" [(ngModel)]="edit_client.name" />
+
+     <input class="form-control mt-2" type="text" [(ngModel)]="edit_client.image_key" />
+
+     <button class="btn btn-sm btn-info mt-3" (click)="edit_client_confirm()">Confirm</button>
+
+</p-dialog>
+
+<p-dialog 
+     [(visible)]="delete_client_dialog_visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="150"
+     [width]="300"
+     *ngIf="delete_client">
+
+     <p-header>
+          Delete Client
+     </p-header>
+
+     <h5 class="text-center">{{delete_client.name}}</h5>
+
+     <button class="btn btn-sm btn-danger mt-3" (click)="delete_client_confirm()">Delete</button>
+
+</p-dialog>

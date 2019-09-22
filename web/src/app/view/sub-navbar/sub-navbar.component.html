@@ -1,0 +1,22 @@
+<div class="container">
+     <div class="row pt-lg-4">
+          <div class="col-12">
+               <ul class="sub-navbar-ul">
+                    <li class="navitem" [ngClass]="{'active':active_tab==='home'}">
+                         <a routerLink="/home">About Us</a>
+                         <div class="uparrow"></div>
+                    </li>
+                    <li class="navitem" [ngClass]="{'active':active_tab==='projects'}">
+                         <a routerLink="/projects">Our Work</a>
+                         <div class="uparrow"></div>
+                    </li>
+                    <li class="navitem float-right">
+                         <a>New Enquiry</a>
+                    </li>
+                    <li class="navitem float-right">
+                         <a>Contact Us</a>
+                    </li>
+               </ul>
+          </div>
+     </div>
+</div>

@@ -1,0 +1,60 @@
+<navbar></navbar>
+<div class="container" *ngIf="project" style="padding-top:5em;">
+     <div class="row">
+          <div class="col-12 col-lg-9">
+               <div class="row">
+                    <div class="col-12">
+                         <h3 class="text-muted">{{project.title}}</h3>
+                         <small class="text-muted">
+                              <i class="fa fa-clock-o"></i>
+                              Completed on {{project.completion_time | date:'MMMM, y'}}
+                         </small>
+                    </div>
+               </div>
+               <hr />
+               <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                         <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+                         <li class="breadcrumb-item"><a routerLink="/projects">Projects</a></li>
+                         <li class="breadcrumb-item active">{{project.title}}</li>
+                    </ol>
+               </nav>
+               <hr />
+               <div class="mb-2">
+                    Categories :
+                    <span *ngFor="let category of project.project_categories; let i=index;" class="badge badge-secondary ml-2">
+                         {{category.name}}
+                    </span>
+                    <span *ngIf="!project.project_categories.length">None</span>
+               </div>
+               <br />
+               <div class="row">
+                    <div class="col-12" [innerHTML]="project.short_description"></div>
+               </div>
+               <div class="row mb-4 mt-3 text-center">
+                    <div class="col-12 col-lg-4 mx-auto" *ngFor="let image of project.images">
+                         <img class="img-thumbnail" src="{{rest.api_hostname}}/image/{{image.key}}" />
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-12" [innerHTML]="project.long_description"></div>
+               </div>
+          </div>
+          <div class="col-12 col-lg-3">
+               <h5 class="text-muted px-3 py-3 mt-4">Our Services</h5>
+               <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let service of appState.state.services" routerLink="/service/{{service.id}}">
+                         {{service.title}}
+                    </li>
+               </ul>
+               
+               <h5 class="text-muted px-3 py-3 mt-4">Other Projects</h5>
+               <ul class="list-group list-group-flush">
+                    <li class="list-group-item" *ngFor="let project of appState.state.projects" routerLink="/project/{{project.id}}">
+                         {{project.title}}
+                    </li>
+               </ul>
+          </div>
+     </div>
+</div>
+<app-footer></app-footer>

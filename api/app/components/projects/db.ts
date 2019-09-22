@@ -10,7 +10,7 @@ class ProjectController {
 
     getById = (projectId: number): Promise<Project> => {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT `id`,`title`,`priority` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` WHERE `id`=?;"
+            let sql = "SELECT `id`,`title`,`projectCategoryName`,`completionTime` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` WHERE `id`=?;"
             db.query(sql, [projectId], (error:MysqlError|null, results: any) => {
                 if(error || !results || results.length!==1) {
                     reject(error)
@@ -24,7 +24,7 @@ class ProjectController {
 
     getAll = (): Promise<Project[]> => {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT `id`,`title`,`priority` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` ORDER BY `priority` DESC;"
+            let sql = "SELECT `id`,`title`,`projectCategoryName`,`completionTime` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` ORDER BY `completionTime` DESC;"
             db.query(sql, (error:MysqlError|null, results: any) => {
                 if(error || !results || results.length!==1) {
                     reject(error)
@@ -52,8 +52,8 @@ class ProjectController {
     
     createNew = (project: Project): Promise<number> => {
         return new Promise((resolve, reject) => {
-            let sql = "INSERT INTO `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` (`title`, `priority`, `articleData`) VALUES (?, ?, ?);"
-            db.query(sql, [project.title, project.priority, '<p>Enter article data</p>'], (error:MysqlError|null, results: any) => {
+            let sql = "INSERT INTO `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` (`title`,`projectCategoryName`,`completionTime`,`articleData`) VALUES (?, ?, ?, ?);"
+            db.query(sql, [project.title, project.projectCategoryName, project.completionTime, '<p>Enter article data</p>'], (error:MysqlError|null, results: any) => {
                 if(error || !results.insertId) reject(error)
                 else resolve(results.insertId)
             })
@@ -62,8 +62,8 @@ class ProjectController {
     
     update = (project: Project): Promise<void> => {
         return new Promise((resolve, reject) => {
-            let sql = "UPDATE `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` SET `title`=?, `priority`=? WHERE `id`=?;"
-            db.query(sql, [project.title, project.priority, project.id], (error:MysqlError|null, results: any) => {
+            let sql = "UPDATE `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` SET `title`=?,`projectCategoryName`=?,`completionTime`=? WHERE `id`=?;"
+            db.query(sql, [project.title, project.projectCategoryName, project.completionTime, project.id], (error:MysqlError|null, results: any) => {
                 if(error) reject(error)
                 else resolve()
             })

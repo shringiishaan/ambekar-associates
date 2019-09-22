@@ -1,0 +1,130 @@
+<admin-navbar></admin-navbar>
+
+<div class="container-fluid" [ngStyle]="adminS.dashboard_container_style">
+     <div class="row">
+          <div class="d-none d-lg-block col-lg-2">
+               <admin-lg-menu [active_tab]="'carousel'"></admin-lg-menu>
+          </div>
+          <div class="col-12 col-lg-10">
+               <div class="row mt-3">
+                    <div class="col-12">
+                         <button class="btn btn-sm btn-outline-info float-right" (click)="new_carousel_dialog_open()">
+                              <i class="fa fa-plus mr-1"></i>
+                              New Image
+                         </button>
+                         <h4 class="text-light">
+                              <i class="fa fa-picture-o mr-2"></i>
+                              Manage Carousel ({{appState.state.carousel_list.length}})
+                         </h4>
+                    </div>
+               </div>
+               <div class="row mt-4">
+                    <div class="col-12 col-md-6 col-lg-3 mx-auto pb-3" *ngFor="let carousel of appState.state.carousel_list">
+                         <div class="card card-body p-0">
+                              <img src="{{rest.api_hostname}}/image/{{carousel.image_key}}" style="max-height:15em;" />
+                              <div class="p-2">
+                                   <div class="row">
+                                        <div class="col">
+                                             <small class="text-muted">Image Key</small>
+                                             <p class="text-dark text-sm">{{carousel.image_key}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col">
+                                             <small class="text-muted">Title</small>
+                                             <p class="text-dark {{(!!carousel.title?'':'text-muted')}} text-sm">{{carousel.title?carousel.title:'None'}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col">
+                                             <small class="text-muted">Description</small>
+                                             <p class="text-dark {{(!!carousel.description?'':'text-muted')}} text-sm">{{carousel.description?carousel.description:'None'}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-12 text-right" (click)="edit_carousel_dialog_open(carousel)">
+                                             <button class="btn btn-sm btn-info mr-2">
+                                                  <i class="fa fa-edit"></i>
+                                                  Edit
+                                             </button>
+                                             <button class="btn btn-sm btn-warning" (click)="delete_carousel_dialog_open(carousel)">
+                                                  <i class="fa fa-trash"></i>
+                                                  Delete
+                                             </button>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+
+<p-dialog 
+     [(visible)]="new_carousel_dialog_visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="150"
+     [width]="600"
+     *ngIf="new_carousel">
+
+     <p-header>
+          New Image
+     </p-header>
+
+     <input class="form-control" type="text" [(ngModel)]="new_carousel.title" placeholder="Carousel Title" />
+
+     <input class="form-control mt-2" type="text" [(ngModel)]="new_carousel.image_key" placeholder="Image Key" />
+
+     <textarea class="form-control mt-2" [(ngModel)]="new_carousel.description"></textarea>
+
+     <button class="btn btn-sm btn-info mt-3" (click)="new_carousel_dialog_confirm()">Create</button>
+
+</p-dialog>
+
+<p-dialog 
+     [(visible)]="edit_carousel_dialog_visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="150"
+     [width]="600"
+     *ngIf="edit_carousel">
+
+     <p-header>
+          Edit Client
+     </p-header>
+
+     <input class="form-control" type="text" [(ngModel)]="edit_carousel.title" />
+
+     <input class="form-control mt-2" type="text" [(ngModel)]="edit_carousel.image_key" />
+
+     <textarea class="form-control mt-2" [(ngModel)]="edit_carousel.description"></textarea>
+
+     <button class="btn btn-sm btn-info mt-3" (click)="edit_carousel_dialog_confirm()">Confirm</button>
+
+</p-dialog>
+
+<p-dialog 
+     [(visible)]="delete_carousel_dialog_visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="150"
+     [width]="300"
+     *ngIf="delete_carousel">
+
+     <p-header>
+          Delete Client
+     </p-header>
+
+     <h5 class="text-center">{{delete_carousel.title}}</h5>
+
+     <button class="btn btn-sm btn-danger mt-3" (click)="delete_carousel_dialog_confirm()">Delete</button>
+
+</p-dialog>

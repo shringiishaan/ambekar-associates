@@ -1,0 +1,42 @@
+<navbar [active_page]="'projects'"></navbar>
+<div class="container" style="padding:2em;padding-top:5em;">
+  <div class="row">
+    <div class="col-12">
+      <h3 class="text-muted">Our Projects ({{appState.state.projects.length}})</h3>
+    </div>
+  </div>
+  <hr />
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+      <li class="breadcrumb-item active">Projects</li>
+    </ol>
+  </nav>
+  <hr />
+  <div class="row" *ngFor="let project of appState.state.projects">
+    <div class="col-12">
+      <div class="card card-body mb-3 p-0" routerLink="/project/{{project.id}}">
+        <div class="row no-gutters">
+          <div class="col-4 col-md-3 col-lg-2 py-2 px-2">
+            <img class="img-thumbnail" src="{{rest.api_hostname}}/image/{{project.images[0]?project.images[0].key:''}}"
+              alt="..." />
+          </div>
+          <div class="col-8 col-md-9 col-lg-10 py-2 px-2">
+            <h5 class="text-muted mt-2 mb-0">{{project.title}}</h5>
+            <small class="text-muted">
+              <i class="fa fa-clock-o"></i>
+              {{project.completion_time | date:'MMMM, y'}}
+              <br class="d-lg-none" />
+              <ng-container *ngFor="let category of project.project_categories">
+                <i class="fa fa-asterisk ml-lg-2"></i>&nbsp;{{category.name}}
+              </ng-container>
+            </small>
+            <hr class="mt-2 mb-2" />
+            <div [innerHTML]="project.short_description"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
