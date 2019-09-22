@@ -1,5 +1,5 @@
 import * as express from 'express'
-import channelRoutes from "../components/channels/routes";
+import channelRoutes from "../components/services/routes";
 import programRoutes from "../components/programs/routes";
 
 let router = express.Router()

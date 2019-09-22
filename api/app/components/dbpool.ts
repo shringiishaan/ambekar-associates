@@ -1,4 +1,4 @@
-import { Pool } from "mysql";
+import { Pool } from "./services/node_modules/mysql";
 
 const mysql = require('mysql')
 
