@@ -53,7 +53,8 @@
 
   <input class="form-control mt-2" type="text" [(ngModel)]="new_service.images" placeholder="Image Key" />
   <br>
-  <quill-editor [(ngModel)]="new_service.short_description" placeholder="Short Description" [modules]="{
+  <textarea class="form-control" [(ngModel)]="new_service.short_description" placeholder="Short Description"></textarea>
+  <!-- <quill-editor [(ngModel)]="new_service.short_description" placeholder="Short Description" [modules]="{
      toolbar: [
      ['bold', 'italic', 'underline', 'strike'],
      ['blockquote', 'code-block'],
@@ -70,8 +71,10 @@
      ['clean'],
      []
      ]
-}"></quill-editor><br>
-  <quill-editor [(ngModel)]="new_service.long_description" placeholder="Long Description" [modules]="{
+}"></quill-editor> -->
+  <br>
+  <textarea class="form-control" [(ngModel)]="new_service.long_description" placeholder="Long Description"></textarea>
+  <!-- <quill-editor [(ngModel)]="new_service.long_description" placeholder="Long Description" [modules]="{
      toolbar: [
      ['bold', 'italic', 'underline', 'strike'],
      ['blockquote', 'code-block'],
@@ -88,7 +91,7 @@
      ['clean'],
      []
      ]
-}"></quill-editor>
+}"></quill-editor> -->
 
   <button class="btn btn-sm btn-info mt-3" (click)="new_service_dialog_confirm()">Create</button>
 

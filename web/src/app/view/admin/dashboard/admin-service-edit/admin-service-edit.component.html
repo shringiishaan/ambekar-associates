@@ -83,7 +83,8 @@
                 <div class="row">
                   <div class="col-12">
                     <h5 class="mb-2">Long Description</h5>
-                    <quill-editor class='text-dark' [(ngModel)]="service_edit.long_description" [modules]="{
+                    <textarea class="form-control" [(ngModel)]="service_edit.long_description"></textarea>
+                    <!-- <quill-editor class='text-dark' [(ngModel)]="service_edit.long_description" [modules]="{
                                                        toolbar: [
                                                        ['bold', 'italic', 'underline', 'strike'],
                                                        ['blockquote', 'code-block'],
@@ -100,7 +101,7 @@
                                                        ['clean'],
                                                        []
                                                        ]
-                                                  }"></quill-editor>
+                                                  }"></quill-editor> -->
                   </div>
                 </div>
               </div>
