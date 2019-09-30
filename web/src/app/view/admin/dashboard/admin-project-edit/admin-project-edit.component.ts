@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppStateService } from 'src/services/app-state.service';
-import { Project } from 'src/models/project.model';
 import { AdminService } from '../../admin.service';
-import { RestService } from 'src/services/rest.service';
-import { AppImage } from 'src/models/app-image.model';
-import { ProjectCategory } from 'src/models/project-category.model';
 
 import * as moment from 'moment'
+import { Project } from 'src/app/models/project.model';
+import { ProjectCategory } from 'src/app/models/project-category.model';
+import { AppImage } from 'src/app/models/app-image.model';
+import { RestService } from 'src/app/rest.service';
+import { ProjectsService } from 'src/app/services/projects.service';
+
 declare var $:any
 
 @Component({
@@ -34,25 +35,26 @@ export class AdminProjectEditComponent implements OnInit {
 
      constructor(
           public rest: RestService,
-          public stateService: AppStateService,
           public adminS: AdminService,
-          public appState: AppStateService,
           public route: ActivatedRoute,
-          public router: Router
+          public router: Router,
+          public projectsService: ProjectsService
      ) { }
 
      ngOnInit() {
           this.route.params.subscribe(params => {
 
-              let project_id: number = parseInt(params['project_id'])
-              if(!project_id) this.router.navigate(['/admin'])
+              let projectId: number = parseInt(params['projectId'])
+               if(!Number.isInteger(projectId)) {
+                    this.router.navigate(['/admin'])
+               }
+               else {
+                    this.projectsService.getOne(projectId).then((project: Project) => {
+                         this.project_edit = project
+                         this.project_completion_time_edit = this.project_edit.completionTime?new Date(this.project_edit.completionTime):null
+                    })
+               }
 
-              let project: Project = this.stateService.state.projects.find(p=>p.id===project_id)
-              if(!project) this.router.navigate(['/admin'])
-
-              this.project_edit = JSON.parse(JSON.stringify(project))
-
-              this.project_completion_time_edit = this.project_edit.completion_time?new Date(this.project_edit.completion_time):null
           })
      }
 
@@ -60,11 +62,9 @@ export class AdminProjectEditComponent implements OnInit {
      }
 
      save_project_changes() {
-          this.project_edit.completion_time = new Date(this.project_completion_time_edit).getTime()
-          this.rest.update_project(this.project_edit, () => {
-               this.appState.update_state(() => {
-                    this.router.navigate(['/admin', 'projects'])
-               })
+          this.project_edit.completionTime = new Date(this.project_completion_time_edit).getTime()
+          this.projectsService.update(this.project_edit).then(() => {
+               this.router.navigate(['/admin', 'projects'])
           })
      }
 
@@ -74,15 +74,20 @@ export class AdminProjectEditComponent implements OnInit {
      }
 
      new_image_dialog_submit() {
-          this.project_edit.images.push((this.new_image))
+          let maxP: number = 0
+          this.project_edit.imageIds.forEach(i=>maxP=(i.priority>maxP)?(i.priority+1):maxP)
+          this.project_edit.imageIds.push({
+               priority:maxP,
+               id:this.new_image.id
+          })
           this.new_image = null
           this.new_image_dialog_visible = false
      }
 
      make_image_first(image: AppImage) {
-          let ind: number = this.project_edit.images.findIndex(i=>i.id===image.id)
-          let im : AppImage = this.project_edit.images.splice(ind, 1)[0]
-          this.project_edit.images.splice(0, 0, im)
+          let ind: number = this.project_edit.imageIds.findIndex(i=>i.id===image.id)
+          let im : any = this.project_edit.imageIds.splice(ind, 1)[0]
+          this.project_edit.imageIds.splice(0, 0, im)
      }
 
 
@@ -91,34 +96,32 @@ export class AdminProjectEditComponent implements OnInit {
      }
 
      delete_project_dialog_submit() {
-          this.rest.delete_project(this.project_edit, (done) => {
-               this.appState.update_state(() => {
-                    this.delete_project_dialog_visible = false
-                    this.router.navigate(['/admin','projects'])
-               })
+          this.projectsService.delete(this.project_edit.id).then(() => {
+               this.delete_project_dialog_visible = false
+               this.router.navigate(['/admin','projects'])
           })
      }
 
      new_project_category_dialog_open() {
-          this.new_project_category = JSON.parse(JSON.stringify(this.appState.state.project_categories[0]))
+          this.new_project_category = JSON.parse(JSON.stringify({}))
           this.new_project_category_dialog_visible = true
      }
 
      new_project_category_dialog_submit() {
-          this.new_project_category.id = this.appState.state.project_categories.find(c=>c.name===this.new_project_category.name).id
-          let c = this.project_edit.project_categories.find(p=>p.name===this.new_project_category.name)
-          if(!c) this.project_edit.project_categories.push(this.new_project_category)
+          // this.new_project_category.id = this.appState.state.project_categories.find(c=>c.name===this.new_project_category.name).id
+          // let c = this.project_edit.project_categories.find(p=>p.name===this.new_project_category.name)
+          // if(!c) this.project_edit.project_categories.push(this.new_project_category)
           this.new_project_category = null
           this.new_project_category_dialog_visible = false
      }
 
      remove_category_from_project(category: ProjectCategory) {
-          let ind = this.project_edit.project_categories.findIndex(c=>c.name===category.name)
-          this.project_edit.project_categories.splice(ind, 1)
+          // let ind = this.project_edit.project_categories.findIndex(c=>c.name===category.name)
+          // this.project_edit.project_categories.splice(ind, 1)
      }
 
      remove_image_from_project(image: AppImage) {
-          let ind = this.project_edit.images.findIndex(i=>i.id===image.id)
-          this.project_edit.images.splice(ind, 1)
+          let ind = this.project_edit.imageIds.findIndex(i=>i.id===image.id)
+          this.project_edit.imageIds.splice(ind, 1)
      }
 }

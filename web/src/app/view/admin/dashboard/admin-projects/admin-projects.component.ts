@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../../admin.service";
-import { AppStateService } from "src/services/app-state.service";
-import { Project } from "src/models/project.model";
-import { RestService } from "src/services/rest.service";
+import { RestService } from "src/app/rest.service";
+import { Project } from "src/app/models/project.model";
+import { ProjectsService } from "src/app/services/projects.service";
 
 @Component({
      selector: "admin-projects",
@@ -13,13 +13,13 @@ export class AdminProjectsComponent implements OnInit {
      constructor(
           public rest: RestService,
           public adminS: AdminService,
-          public appState: AppStateService
+          public projectsService: ProjectsService
      ) { }
 
      ngOnInit() { }
 
      new_project_dialog_visible: boolean = false;
-     new_project: Project;
+     new_project: Project
 
      new_project_dialog_open() {
           this.new_project = new Project();
@@ -27,7 +27,7 @@ export class AdminProjectsComponent implements OnInit {
      }
 
      new_project_dialog_confirm() {
-          this.rest.new_project(this.new_project, () => {
+          this.projectsService.createNew(this.new_project).then(() => {
                this.new_project_dialog_visible = false
           })
      }
@@ -42,10 +42,8 @@ export class AdminProjectsComponent implements OnInit {
      }
 
      delete_project_dialog_submit() {
-          this.rest.delete_project(this.delete_project, done => {
-               this.appState.update_state(() => {
-                    this.delete_project_dialog_visible = false;
-               });
-          });
+          this.projectsService.delete(this.delete_project.id).then(() => {
+               this.delete_project_dialog_visible = false;
+          })
      }
 }

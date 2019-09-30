@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AppStateService } from 'src/services/app-state.service';
-import { RestService } from 'src/services/rest.service';
+import { RestService } from 'src/app/rest.service';
+import { Service } from 'src/app/models/service.model';
+import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
      selector: 'home-services',
@@ -10,12 +11,16 @@ import { RestService } from 'src/services/rest.service';
 
 export class HomeServicesComponent implements OnInit {
 
+     services: Service[] = []
+
      constructor(
-          public stateService: AppStateService,
-          public rest: RestService
+          public rest: RestService,
+          public servicesService: ServicesService
      ) { }
 
      ngOnInit() {
+          this.servicesService.getAll().then(services => this.services = services)
+          .catch(err => console.error(err))
      }
 
 }

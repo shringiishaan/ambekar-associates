@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AdminService } from "../../admin.service";
-import { Service } from "src/models/service.model";
-import { AppStateService } from "src/services/app-state.service";
+import { Service } from "src/app/models/service.model";
 
 @Component({
   selector: "admin-services",
@@ -9,11 +8,18 @@ import { AppStateService } from "src/services/app-state.service";
   styleUrls: ["./admin-services.component.css"]
 })
 export class AdminServicesComponent implements OnInit {
-  constructor(public adminS: AdminService, public appState: AppStateService) {}
-  new_service_dialog_visible: boolean = false;
 
-  new_service: Service;
+  constructor(
+    public adminS: AdminService
+  ) 
+  {}
+  
+  new_service_dialog_visible: boolean = false
+
+  new_service: Service
+
   ngOnInit() {}
+  
   new_service_dialog_open() {
     this.new_service = new Service();
     this.new_service_dialog_visible = true;

@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { RestService } from "src/services/rest.service";
-import { AppStateService } from "src/services/app-state.service";
 import { AdminService } from "../../admin.service";
-import { Service } from "src/models/service.model";
 import { ActivatedRoute, Router } from "@angular/router";
-import { AppImage } from "src/models/app-image.model";
+import { Service } from "src/app/models/service.model";
+import { AppImage } from "src/app/models/app-image.model";
+import { RestService } from "src/app/rest.service";
+import { ServicesService } from "src/app/services/services.service";
 
 @Component({
   selector: "admin-service-edit",
@@ -12,43 +12,41 @@ import { AppImage } from "src/models/app-image.model";
   styleUrls: ["./admin-service-edit.component.css"]
 })
 export class AdminServiceEditComponent implements OnInit {
-  service_edit: Service;
+
+  service_edit: Service
 
   delete_service_dialog_visible: boolean = false;
 
   new_image_dialog_visible: boolean = false;
 
-  new_image: AppImage;
+  new_image: AppImage
 
   constructor(
     public rest: RestService,
-    public stateService: AppStateService,
     public adminS: AdminService,
-    public appState: AppStateService,
     public route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    public servicesService: ServicesService
   ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      let service_id: number = parseInt(params["service_id"]);
-      if (!service_id) this.router.navigate(["/admin"]);
-
-      let service: Service = this.stateService.state.services.find(
-        p => p.id === service_id
-      );
-      if (!service) this.router.navigate(["/admin"]);
-
-      this.service_edit = JSON.parse(JSON.stringify(service));
+      let serviceId: number = parseInt(params["serviceId"]);
+      if (!Number.isInteger(serviceId)) {
+        this.router.navigate(["/admin"])
+      }
+      else {
+        this.servicesService.getOne(serviceId).then((service: Service) => {
+          this.service_edit = JSON.parse(JSON.stringify(service));
+        })
+      }
     });
   }
 
   save_service_changes() {
-    this.rest.update_service(this.service_edit, () => {
-      this.appState.update_state(() => {
-        this.router.navigate(["/admin", "services"]);
-      });
-    });
+    this.servicesService.update(this.service_edit).then(() => {
+      this.router.navigate(["/admin", "services"])
+    })
   }
 
   new_image_dialog_open() {
@@ -57,17 +55,11 @@ export class AdminServiceEditComponent implements OnInit {
   }
 
   new_image_dialog_submit() {
-    this.service_edit.images.push(this.new_image);
-    this.new_image = null;
-    this.new_image_dialog_visible = false;
-  }
-
-  make_image_first(image: AppImage) {
-    let ind: number = this.service_edit.images.findIndex(
-      i => i.id === image.id
-    );
-    let im: AppImage = this.service_edit.images.splice(ind, 1)[0];
-    this.service_edit.images.splice(0, 0, im);
+    let maxP: number = 0
+    this.service_edit.imageIds.forEach(k=>maxP=(k.priority>maxP)?(k.priority+1):maxP)
+    this.service_edit.imageIds.push({priority:maxP,id:this.new_image.id})
+    this.new_image = null
+    this.new_image_dialog_visible = false
   }
 
   delete_service_dialog_open() {
@@ -75,16 +67,14 @@ export class AdminServiceEditComponent implements OnInit {
   }
 
   delete_service_dialog_submit() {
-    this.rest.delete_service(this.service_edit, done => {
-      this.appState.update_state(() => {
-        this.delete_service_dialog_visible = false;
-        this.router.navigate(["/admin", "services"]);
-      });
-    });
+    this.servicesService.delete(this.service_edit.id).then(done => {
+      this.delete_service_dialog_visible = false
+      this.router.navigate(["/admin", "services"])
+    })
   }
 
   remove_image_from_service(image: AppImage) {
-    let ind = this.service_edit.images.findIndex(i => i.id === image.id);
-    this.service_edit.images.splice(ind, 1);
+    let ind = this.service_edit.imageIds.findIndex(i => i.id === image.id)
+    this.service_edit.imageIds.splice(ind, 1)
   }
 }

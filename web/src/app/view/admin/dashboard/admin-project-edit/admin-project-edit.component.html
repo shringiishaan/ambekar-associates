@@ -86,7 +86,7 @@
                 <div class="row my-3">
                   <div class="col-12 col-lg-3" *ngFor="let image of project_edit.images; let i=index;">
                     <div class="card">
-                      <img class="card-img-top" src="{{rest.api_hostname}}/image/{{image.key}}" alt="Card image cap">
+                      <img class="card-img-top" src="{{rest.API_URI}}/image/{{image.key}}" alt="Card image cap">
                       <div class="card-body p-2">
                         <p class="card-text">Key : {{image.key}}</p>
                         <a class="btn btn-sm btn-info text-light mr-2" *ngIf="i!==0" (click)="make_image_first(image)">

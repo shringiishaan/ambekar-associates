@@ -3,7 +3,7 @@ import { ProjectCategory } from "../../models/project-category.model";
 
 import db from '../dbpool'
 
-const DATABASE_NAME = 'ambekar-webapp'
+const DATABASE_NAME = 'ambekar-associates'
 const TABLE_NAME = 'project_categories'
 
 class ProjectCategoryController {
@@ -26,7 +26,7 @@ class ProjectCategoryController {
         return new Promise((resolve, reject) => {
             let sql = "SELECT * FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` ORDER BY `priority` DESC;"
             db.query(sql, (error:MysqlError|null, results: any) => {
-                if(error || !results || results.length!==1) {
+                if(error || !results) {
                     reject(error)
                 }
                 else {

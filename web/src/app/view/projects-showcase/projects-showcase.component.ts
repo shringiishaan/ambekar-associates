@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RestService } from 'src/services/rest.service';
-import { AppStateService } from 'src/services/app-state.service';
+import { RestService } from 'src/app/rest.service';
 
 declare var $: any
 
@@ -15,8 +14,7 @@ export class ProjectsShowcaseComponent implements OnInit {
      active_project_category: string
 
      constructor(
-          public rest: RestService,
-          public stateService: AppStateService
+          public rest: RestService
      ) { }
 
      ngOnInit() {

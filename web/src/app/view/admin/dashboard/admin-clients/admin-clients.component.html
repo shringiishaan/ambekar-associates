@@ -21,7 +21,7 @@
                <div class="row mt-4">
                     <div class="col-12 col-md-6 col-lg-3" *ngFor="let client of appState.state.clients">
                          <div class="card card-body p-2">
-                              <img src="{{rest.api_hostname}}/image/{{client.image_key}}" style="max-height:15em;" />
+                              <img src="{{rest.API_URI}}/image/{{client.image_key}}" style="max-height:15em;" />
                               <div class="row">
                                    <div class="col-12">
                                         <i class="fa fa-trash text-warning float-right" style="cursor: pointer;font-size:1.5em;" (click)="delete_client_dialog_open(client)"></i>

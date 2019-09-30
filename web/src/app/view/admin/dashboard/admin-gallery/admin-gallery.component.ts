@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../admin.service';
-import { RestService } from 'src/services/rest.service';
 import { HttpClient } from '@angular/common/http';
-import { AppImage } from 'src/models/app-image.model';
+import { AppImage } from 'src/app/models/app-image.model';
+import { RestService } from 'src/app/rest.service';
 
 @Component({
      selector: 'admin-gallery',
@@ -25,10 +25,10 @@ export class AdminGalleryComponent implements OnInit {
      }
 
      update_image_list(callback:Function) {
-          this.rest.get_all_app_images((images: AppImage[]) => {
-               this.image_list = images
-               callback()
-          })
+          // this.rest.get_all_app_images((images: AppImage[]) => {
+          //      this.image_list = images
+          //      callback()
+          // })
      }
     
 
@@ -38,14 +38,12 @@ export class AdminGalleryComponent implements OnInit {
 
      new_image_name: string
 
-     new_image_key: string
-
      open_new_image_dialog() {
           this.new_image_dialog_visible = true
      }
 
      new_image_name_changed(new_name: string) {
-          this.new_image_key = new_name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')
+          // this.new_image_key = new_name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')
      }
 
      file_input_changed(evt) {
@@ -56,17 +54,16 @@ export class AdminGalleryComponent implements OnInit {
      new_image_upload_submit() {
           let image: AppImage = new AppImage()
           image.name = this.new_image_name
-          image.key = this.new_image_key
-          this.rest.new_app_image(image, (new_id:number) => {
-               let formData = new FormData()
-               formData.append('key', this.new_image_key)
-               formData.append('image', this.new_image_file)
-               this.http.post(this.rest.api_hostname + '/upload_image_to_server', formData).subscribe((res:Response) => {
-                    this.update_image_list(() => {
-                         this.new_image_dialog_visible = false
-                    })
-               })
-          })
+          // this.rest.new_app_image(image, (new_id:number) => {
+          //      let formData = new FormData()
+          //      formData.append('key', this.new_image_key)
+          //      formData.append('image', this.new_image_file)
+          //      this.http.post(this.rest.API_URI + '/upload_image_to_server', formData).subscribe((res:Response) => {
+          //           this.update_image_list(() => {
+          //                this.new_image_dialog_visible = false
+          //           })
+          //      })
+          // })
      }
 
      
@@ -80,10 +77,10 @@ export class AdminGalleryComponent implements OnInit {
      }
 
      delete_app_image_dialog_submit() {
-          this.rest.delete_app_image(this.delete_image_file, () => {
-               this.update_image_list(() => {
-                    this.delete_image_dialog_visible = false
-               })
-          })
+          // this.rest.delete_app_image(this.delete_image_file, () => {
+          //      this.update_image_list(() => {
+          //           this.delete_image_dialog_visible = false
+          //      })
+          // })
      }
 }

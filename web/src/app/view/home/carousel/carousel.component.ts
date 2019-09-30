@@ -44,7 +44,7 @@ export class CarouselComponent implements OnInit {
                }, this.waitTimeBeforeMovement)
           }
           
-          embla.on('click', onActivity)
+          // embla.on(new Event('click'), onActivity)
           embla.on('dragStart', onActivity)
 
           if(this.active)

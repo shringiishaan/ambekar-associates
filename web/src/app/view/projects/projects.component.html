@@ -18,7 +18,7 @@
       <div class="card card-body mb-3 p-0" routerLink="/project/{{project.id}}">
         <div class="row no-gutters">
           <div class="col-4 col-md-3 col-lg-2 py-2 px-2">
-            <img class="img-thumbnail" src="{{rest.api_hostname}}/image/{{project.images[0]?project.images[0].key:''}}"
+            <img class="img-thumbnail" src="{{rest.API_URI}}/image/{{project.images[0]?project.images[0].key:''}}"
               alt="..." />
           </div>
           <div class="col-8 col-md-9 col-lg-10 py-2 px-2">

@@ -3,20 +3,39 @@ import { Service } from "../../models/service.model";
 
 import db from '../dbpool'
 
-const DATABASE_NAME = 'ambekar-webapp'
+const DATABASE_NAME = 'ambekar-associates'
 const TABLE_NAME = 'services'
+const IMAGE_TABLE_NAME = 'service_images'
 
 class ServiceController {
 
     getById = (serviceId: number): Promise<Service> => {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT `id`,`title`,`priority` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` WHERE `id`=?;"
-            db.query(sql, [serviceId], (error:MysqlError|null, results: any) => {
+            let query = "SELECT `id`,`title`,`priority` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` WHERE `id`=?;"
+            db.query(query, [serviceId], (error:MysqlError|null, results: any) => {
                 if(error || !results || results.length!==1) {
                     reject(error)
                 }
                 else {
-                    resolve(results[0])
+                    let service: Service = new Service()
+                    service.id = results[0].id
+                    service.priority = results[0].priority
+                    service.title = results[0].title
+                    query = "SELECT `imageId`,`priority` FROM `"+DATABASE_NAME+"`.`"+IMAGE_TABLE_NAME+"` WHERE `serviceId`=? ORDER BY `priority` DESC;"
+                    db.query(query, [serviceId], (error:MysqlError|null, results: any) => {
+                        if(error || !results) {
+                            reject(error)
+                        }
+                        else {
+                            results.forEach((result:any) => {
+                                service.imageIds.push({
+                                    id: result.imageId,
+                                    priority: result.priority
+                                })
+                            })
+                            resolve(service)
+                        } 
+                    })
                 } 
             })
         })
@@ -26,11 +45,40 @@ class ServiceController {
         return new Promise((resolve, reject) => {
             let sql = "SELECT `id`,`title`,`priority` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` ORDER BY `priority` DESC;"
             db.query(sql, (error:MysqlError|null, results: any) => {
-                if(error || !results || results.length!==1) {
+                if(error || !results) {
                     reject(error)
                 }
                 else {
-                    resolve(results)
+                    let services: Service[] = []
+                    let totalServices: number = results.length
+                    results.forEach((result:any) => {
+                        let service: Service = new Service()
+                        service.id = result.id
+                        service.priority = result.priority
+                        service.title = result.title
+                        let query = "SELECT `imageId`,`priority` FROM `"+DATABASE_NAME+"`.`"+IMAGE_TABLE_NAME+"` WHERE `serviceId`=? ORDER BY `priority` DESC;"
+                        db.query(query, [service.id], (error:MysqlError|null, results: any) => {
+                            if(error || !results) {
+                                totalServices--
+                            }
+                            else {
+                                results.forEach((result:any) => {
+                                    service.imageIds.push({
+                                        id: result.imageId,
+                                        priority: result.priority
+                                    })
+                                })
+                                services.push(service)
+                                totalServices--
+                            } 
+                        })
+                    })
+                    let int = setInterval(() => {
+                        if(!totalServices) {
+                            clearInterval(int)
+                            resolve(services)
+                        }
+                    }, 50)
                 } 
             })
         })
@@ -85,7 +133,13 @@ class ServiceController {
             let sql = "DELETE FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` WHERE `id`=?;"
             db.query(sql, [serviceId], (error:MysqlError|null, results: any) => {
                 if(error) reject(error)
-                else resolve()
+                else {
+                    sql = "DELETE FROM `"+DATABASE_NAME+"`.`"+IMAGE_TABLE_NAME+"` WHERE `serviceId`=?;"
+                    db.query(sql, [serviceId], (error:MysqlError|null, results: any) => {
+                        if(error) reject(error)
+                        else resolve()
+                    })
+                }
             })
         })
     }

@@ -1,4 +1,4 @@
-import { Pool } from "./services/node_modules/mysql";
+import { Pool } from "mysql";
 
 const mysql = require('mysql')
 
@@ -12,7 +12,7 @@ class DBPool {
             host: 'localhost',
             user: 'root',
             password: 'mysqlroot',
-            database: 'channel_manager_1_4'
+            database: 'ambekar-associates'
         })
         this.check_db_errors()
     }

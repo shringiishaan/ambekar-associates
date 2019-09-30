@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Service } from 'src/models/service.model';
-import { AppStateService } from 'src/services/app-state.service';
 import { ActivatedRoute } from '@angular/router';
-import { RestService } from 'src/services/rest.service';
+import { Service } from 'src/app/models/service.model';
+import { ServicesService } from 'src/app/services/services.service';
 
 @Component({
      selector: 'service',
@@ -15,15 +14,19 @@ export class ServiceComponent implements OnInit {
      service: Service
 
      constructor(
-          public appState: AppStateService,
           public route: ActivatedRoute,
-          public rest: RestService
+          public servicesService: ServicesService
      ) { }
 
      ngOnInit() {
           this.route.params.subscribe((params) => {
-               let service_id: number = parseInt(params['service_id'])
-               this.service = this.appState.state.services.find(s=>s.id===service_id)
+               this.service = null
+               let serviceId: number = parseInt(params['serviceId'])
+               if(Number.isInteger(serviceId)) {
+                    this.servicesService.getOne(serviceId).then((service: Service) => {
+                         this.service = service   
+                    }).catch(err => console.error(err))
+               }
           })
      }
 

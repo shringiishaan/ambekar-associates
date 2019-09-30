@@ -3,7 +3,7 @@ import { AppImage } from "../../models/app-image.model";
 
 import db from '../dbpool'
 
-const DATABASE_NAME = 'ambekar-webapp'
+const DATABASE_NAME = 'ambekar-associates'
 const TABLE_NAME = 'images'
 
 class ProjectController {
@@ -26,7 +26,7 @@ class ProjectController {
         return new Promise((resolve, reject) => {
             let sql = "SELECT `id`,`name` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"`;"
             db.query(sql, (error:MysqlError|null, results: any) => {
-                if(error || !results || results.length!==1) {
+                if(error || !results) {
                     reject(error)
                 }
                 else {
