@@ -8,7 +8,7 @@ import { Service } from '../models/service.model';
 })
 export class ServicesService {
 
-  API_APPEND: string = "/service"
+  API_APPEND: string = "/services"
 
   constructor(
     public rest: RestService,
@@ -19,7 +19,6 @@ export class ServicesService {
     return new Promise((resolve, reject) => {
       this.http.get(this.rest.API_URI+this.API_APPEND+'/all')
       .subscribe((data:any) => {
-        console.log(data)
         if(data && data.success) resolve(data.services)
         else reject(data.error)
       })
@@ -38,7 +37,7 @@ export class ServicesService {
 
   createNew(service: Service): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post(this.rest.API_URI+this.API_APPEND+'/createNew', {service:service})
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/new', {service:service})
       .subscribe((data:any) => {
         if(data && data.success) resolve(data.newServiceId)
         else reject(data.error)

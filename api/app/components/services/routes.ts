@@ -71,7 +71,7 @@ router.get("/article/:serviceId", (req: Request, res: Response) => {
     }
 })
 
-router.post("/createNew", (req: Request, res: Response) => {
+router.post("/new", (req: Request, res: Response) => {
     let service: Service = req.body.service
     if(service) {
         db.createNew(service).then((newId:number) => {
