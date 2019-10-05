@@ -35,14 +35,14 @@
                                              {{project.title}}
                                         </h5>
                                         <small class="text-muted">
-                                             <ng-container *ngIf="project.completionTime">
+                                             <div *ngIf="project.completionTime">
                                                   <i class="fa fa-clock-o mr-1"></i>
-                                                  {{project.completionTime | date:'MMMM, y'}}
-                                             </ng-container>
-                                             <ng-container *ngIf="project.projectCategoryName">
+                                                  Completed On : {{project.completionTime | date:'MMMM, y'}}
+                                             </div>
+                                             <div *ngIf="project.projectCategoryName">
                                                   <i class="fa fa-asterisk mr-1"></i>
-                                                  {{project.projectCategoryName}}
-                                             </ng-container>
+                                                  Category : {{project.projectCategoryName}}
+                                             </div>
                                         </small>
                                    </div>
                               </div>

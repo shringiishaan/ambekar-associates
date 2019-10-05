@@ -27,7 +27,7 @@ export class ProjectsService {
 
   getOne(projectId: number): Promise<Project> {
     return new Promise((resolve, reject) => {
-      this.http.get(this.rest.API_URI+this.API_APPEND+'/one'+projectId)
+      this.http.get(this.rest.API_URI+this.API_APPEND+'/one/'+projectId)
       .subscribe((data:any) => {
         if(data && data.success) resolve(data.project)
         else reject(data.error)

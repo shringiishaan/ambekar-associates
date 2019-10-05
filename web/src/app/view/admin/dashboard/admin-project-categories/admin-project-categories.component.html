@@ -19,17 +19,37 @@
       </div>
       <div class="row mt-4">
         <div class="col-12 col-md-6">
-          <div class="list-group">
-            <a class="list-group-item list-group-item" *ngFor="let category of projectCategories">
-              <button class="btn btn-sm btn-warning float-right" (click)="delete_project_category_trigger(category)">
-                <i class="fa fa-trash"></i>
-              </button>
-              <button class="btn btn-sm btn-info float-right mr-2" (click)="edit_project_category_trigger(category)">
-                <i class="fa fa-edit"></i>
-              </button>
-              {{category.name}}
-            </a>
-          </div>
+          <table class="table table-hover table-dark">
+            <thead>
+              <tr>
+                <th>
+                  Category Name
+                </th>
+                <th>
+                  Priority
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of projectCategories">
+                <td>
+                  {{category.name}}
+                </td>
+                <td>
+                  {{category.priority}}
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="delete_project_category_trigger(category)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-secondary ml-2" (click)="edit_project_category_trigger(category)">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -115,6 +135,11 @@
       <div class="row">
         <div class="col-12">
           <input class="form-control" type="text" [(ngModel)]="edit_project_category.name" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <input class="form-control" type="number" [(ngModel)]="edit_project_category.priority" />
         </div>
       </div>
       <div class="row mt-3 mb-2">

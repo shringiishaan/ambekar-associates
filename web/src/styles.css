@@ -3,13 +3,27 @@ html, body {
     background: #333 !important;
 }
 
-p {
+hr {
+  border-color:#fff !important;
+}
+
+p, h1, h2, h3, h4, h5 {
     color:#fff;
 }
 
-*,
-*:focus {
-  outline: none;
+.card, .card-body {
+  background: #343a40 !important;
+  color: #fff;
+}
+
+input, textarea, select {
+  background: #222 !important;
+  color:#fff !important;
+  border-color: #fff;
+  outline: none !important;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none !important;
 }
 
 .breadcrumb {
