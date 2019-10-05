@@ -2,10 +2,29 @@ import { Router, Response, Request } from "express"
 import db from './db'
 import { logger } from "../../logger"
 import { AppImage } from "../../models/app-image.model"
+import multer from 'multer'
+import path from 'path'
+import fs from 'fs'
 
 let toErrorString = (req:Request, error:string) => {
     return "AppImagesRouter ["+req.url+"] : "+error
 }
+
+var UPLOAD_DIR = './images/'
+var imageUploader = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, callback) => {
+            callback(null, UPLOAD_DIR)
+        },
+        filename: (req: Request, file: Express.Multer.File, cb) => {
+            let image: AppImage = new AppImage()
+            image.name = file.originalname
+            db.createNew(image).then((newImageId: number) => {
+                cb(null, newImageId + '.png')
+            }).catch(err => console.error(err))
+        }
+    })
+}).single('image')
 
 var router: Router = Router()
 
@@ -28,6 +47,15 @@ router.get("/all", (req: Request, res: Response) => {
 router.get("/one/:appImageId", (req: Request, res: Response) => {
     let appImageId: number = parseInt(req.params.appImageId)
     if(Number.isInteger(appImageId) && appImageId) {
+        res.sendFile(path.resolve('./images/', req.params.appImageId + '.png'))
+    } else {
+        res.sendFile(path.resolve('./images/ERROR404.png'))
+    }
+})
+
+router.get("/oneObject/:appImageId", (req: Request, res: Response) => {
+    let appImageId: number = parseInt(req.params.appImageId)
+    if(Number.isInteger(appImageId) && appImageId) {
         db.getById(appImageId).then((appImage: AppImage) => {
             res.status(200).json({
                 success: true,
@@ -48,51 +76,43 @@ router.get("/one/:appImageId", (req: Request, res: Response) => {
     }
 })
 
-router.post("/new", (req: Request, res: Response) => {
-    let appImage: AppImage = req.body.appImage
-    if(appImage) {
-        db.createNew(appImage).then((newId:number) => {
-            res.status(200).json({success: true,newAppImageId:newId})
-        }).catch((error) => {
-            logger.error(toErrorString(req, error))
+router.post("/createNew", (req: Request, res: Response) => {
+    imageUploader(req, res, (err) => {
+        if (err) {
+            logger.error(toErrorString(req, err))
             res.status(200).json({
                 success: false,
-                error: error
+                error: err
             })
-        })
-    } else {
-        res.status(200).json({
-            success: false,
-            error: 'Invalid parameter : appImage'
-        })
-    }
-})
-
-router.post("/update", (req: Request, res: Response) => {
-    let appImage: AppImage = req.body.appImage
-    if(appImage) {
-        db.update(appImage).then(() => {
-            res.status(200).json({success: true})
-        }).catch((error) => {
-            logger.error(toErrorString(req, error))
+        }
+        else {
+            let filename: string = req.file.filename
+            let idStr: string = filename.split('.')[0]
+            let id: number = parseInt(idStr)
             res.status(200).json({
-                success: false,
-                error: error
+                success: true,
+                newAppImageId: id
             })
-        })
-    } else {
-        res.status(200).json({
-            success: false,
-            error: 'Invalid parameter : appImage'
-        })
-    }
+        }
+    })
 })
 
 router.post("/delete/:appImageId", (req: Request, res: Response) => {
     let appImageId: number = parseInt(req.params.appImageId)
     if(Number.isInteger(appImageId) && appImageId) {
+        let imagePath: string = path.resolve('./images/', req.params.appImageId + '.png')
         db.delete(appImageId).then(() => {
-            res.status(200).json({success: true})
+            fs.unlink(imagePath, (error) => {
+              if (error) {
+                logger.error(toErrorString(req, error.message))
+                res.status(200).json({
+                    success: false,
+                    error: error
+                })
+              } else {
+                res.status(200).json({success: true})
+              }
+            })
         }).catch((error) => {
             logger.error(toErrorString(req, error))
             res.status(200).json({

@@ -3,6 +3,7 @@ import { AdminService } from '../../admin.service';
 import { HttpClient } from '@angular/common/http';
 import { AppImage } from 'src/app/models/app-image.model';
 import { RestService } from 'src/app/rest.service';
+import { AppImagesService } from 'src/app/services/images.service';
 
 @Component({
      selector: 'admin-gallery',
@@ -12,23 +13,27 @@ import { RestService } from 'src/app/rest.service';
 
 export class AdminGalleryComponent implements OnInit {
 
-     image_list: AppImage[] = []
+     appImages: AppImage[] = []
 
      constructor(
           public rest: RestService,
           public adminS: AdminService,
-          public http: HttpClient
+          public http: HttpClient,
+          public imageService: AppImagesService
      ) { }
 
      ngOnInit() {
-          this.update_image_list(()=>{})
+          this.updateAppImages()
+          .catch(err=>console.error(err))
      }
 
-     update_image_list(callback:Function) {
-          // this.rest.get_all_app_images((images: AppImage[]) => {
-          //      this.image_list = images
-          //      callback()
-          // })
+     updateAppImages() {
+          return new Promise((resolve, reject) => {
+               this.imageService.getAll().then((images: AppImage[]) => {
+                    this.appImages = images
+                    resolve()
+               }).catch(err=>reject(err))
+          })
      }
     
 
@@ -46,26 +51,23 @@ export class AdminGalleryComponent implements OnInit {
           // this.new_image_key = new_name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '-')
      }
 
-     file_input_changed(evt) {
-          let file = evt.target.files.item(0)
+     uploadNewImage(evt) {
+          let file: File = evt.target.files.item(0)
           this.new_image_file = file
-     }
-
-     new_image_upload_submit() {
           let image: AppImage = new AppImage()
-          image.name = this.new_image_name
-          // this.rest.new_app_image(image, (new_id:number) => {
-          //      let formData = new FormData()
-          //      formData.append('key', this.new_image_key)
-          //      formData.append('image', this.new_image_file)
-          //      this.http.post(this.rest.API_URI + '/upload_image_to_server', formData).subscribe((res:Response) => {
-          //           this.update_image_list(() => {
-          //                this.new_image_dialog_visible = false
-          //           })
-          //      })
-          // })
+          image.name = file.name
+          let formData = new FormData()
+          formData.append('image', this.new_image_file)
+          formData.append('name', this.new_image_file.name)
+          this.imageService.uploadNew(formData)
+          .then((newId: number) => {
+               console.log(newId)
+               this.updateAppImages().then(() => {
+                    this.new_image_dialog_visible = false
+               }).catch(err=>console.error(err))
+          }).catch(err=>console.error(err))
      }
-
+ 
      
      delete_image_dialog_visible: boolean = false
 
@@ -77,10 +79,10 @@ export class AdminGalleryComponent implements OnInit {
      }
 
      delete_app_image_dialog_submit() {
-          // this.rest.delete_app_image(this.delete_image_file, () => {
-          //      this.update_image_list(() => {
-          //           this.delete_image_dialog_visible = false
-          //      })
-          // })
+          this.imageService.delete(this.delete_image_file.id).then(() => {
+               this.updateAppImages().then(() => {
+                    this.delete_image_dialog_visible = false
+               }).catch(err=>console.error(err))
+          }).catch(err=>console.error(err))
      }
 }

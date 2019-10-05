@@ -8,32 +8,25 @@
           <div class="col-12 col-lg-10">                    
                <div class="row mt-3">
                     <div class="col-12">
-                         <button class="btn btn-sm btn-outline-info float-right" (click)="open_new_image_dialog()">
-                              <i class="fa fa-upload mr-2"></i>
-                              Upload Image
+                         <input #imageInput type="file" name="image" (change)="uploadNewImage($event)" class="d-none" accept="image/png,image/jpeg" />
+                         <button (click)="imageInput.click()" class="btn btn-sm btn-info float-right mt-2">
+                              Upload
                          </button>
                          <h4 class="text-light">
                               <i class="fa fa-picture-o mr-2"></i>
-                              Gallery ({{image_list.length}})
+                              Gallery ({{appImages.length}})
                          </h4>
                     </div>
                </div>
                <div class="row mt-4">
-                    <div class="col-12 col-md-6 col-lg-3 pb-3" *ngFor="let image of image_list">
+                    <div class="col-12 col-md-6 col-lg-3 pb-3" *ngFor="let image of appImages">
                          <div class="card">
-                              <img src="{{rest.API_URI}}/image/{{image.key}}" class="card-img-top" alt="Image" />
+                              <img src="{{rest.API_URI}}/images/one/{{image.id}}" class="card-img-top" alt="Image" />
                               <div class="card-body p-2">
                                    <div class="row">
                                         <div class="col-12">
-                                             <i class="fa fa-trash text-warning float-right" style="cursor: pointer;font-size:1.5em;" (click)="delete_app_image_dialog_open(image)"></i>
-                                             <small class="text-muted">Image Name</small>
-                                             <p class="text-dark">{{image.name}}</p>
-                                        </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-12">
-                                             <small class="text-muted">Image Key</small>
-                                             <p class="text-dark">{{image.key}}</p>
+                                             <i class="fa fa-trash text-warning float-right" style="cursor: pointer;font-size:1.2em;" (click)="delete_app_image_dialog_open(image)"></i>
+                                             <small class="text-muted">{{image.name}}</small>
                                         </div>
                                    </div>
                               </div>
@@ -45,53 +38,31 @@
 </div>
 
 <p-dialog 
-     [(visible)]="new_image_dialog_visible"
-     [modal]="true"
-     [blockScroll]="true"
-     [dismissableMask]="true"
-     [showHeader]="true"
-     [positionTop]="150"
-     [width]="600">
-
-     <p-header>
-          Upload Image
-     </p-header>
-
-     <div class="row no-gutters py-3">
-          <div class="col-12 col-md-8 col-4 mx-auto">
-               <form #form action="fileupload" method="post" enctype="multipart/form-data" action="http://localhost:5001/api/upload_image_to_server">
-                    <input type="text" name="img_name" [(ngModel)]="new_image_name" placeholder="Image Name" class="form-control mb-2" (ngModelChange)="new_image_name_changed($event)" />
-                    <input type="text" name="img_key" [(ngModel)]="new_image_key" placeholder="imagekey" class="form-control mb-2" [disabled]="true" />
-                    <input type="file" name="image" (change)="file_input_changed($event)" />
-                    <br />
-                    <button (click)="new_image_upload_submit()" class="btn btn-sm btn-info mt-2">
-                         Upload
-                    </button>
-               </form>
-          </div>
-     </div>
-
-</p-dialog>
-
-<p-dialog 
      [(visible)]="delete_image_dialog_visible"
      [modal]="true"
      [blockScroll]="true"
      [dismissableMask]="true"
      [showHeader]="true"
-     [positionTop]="150"
-     [width]="600">
+     [positionTop]="100">
 
      <p-header>
           Delete Image
      </p-header>
 
-     <div class="row no-gutters py-3" *ngIf="delete_image_file">
-          <div class="col-12">
-               <h5>{{delete_image_file.name}}</h5>
+     <div class="container-fluid" *ngIf="delete_image_file">
+          <div class="row">
+               <div class="col-12">
+                    <p class="text-dark">{{delete_image_file.name}}</p>
+               </div>
+          </div>
+          <div class="row text-right mt-3 mb-2">
+               <div class="col-12">
+                    <button class="btn btn-danger btn-sm" (click)="delete_app_image_dialog_submit()">
+                         <i class="fa fa-trash mr-1"></i>
+                         Delete
+                    </button>
+               </div>
           </div>
      </div>
-
-     <button class="btn btn-danger btn-sm" (click)="delete_app_image_dialog_submit()">Delete</button>
 
 </p-dialog>
