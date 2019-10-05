@@ -7,6 +7,7 @@ import { AppImage } from 'src/app/models/app-image.model';
 import { RestService } from 'src/app/rest.service';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { ProjectCategoriesService } from 'src/app/services/project-categories.service';
+import { AppImagesService } from 'src/app/services/images.service';
 
 declare var $:any
 
@@ -24,7 +25,13 @@ export class AdminProjectEditComponent implements OnInit {
 
      project_completion_time_edit: Date
 
-     delete_project_dialog_visible: boolean = false
+     articleData: string
+
+     isGeneralEditMode: boolean
+
+     isArticleEditMode: boolean
+
+     subscription
 
      constructor(
           public rest: RestService,
@@ -32,44 +39,110 @@ export class AdminProjectEditComponent implements OnInit {
           public route: ActivatedRoute,
           public router: Router,
           public projectsService: ProjectsService,
-          public projectCategroiesService: ProjectCategoriesService
+          public projectCategroiesService: ProjectCategoriesService,
+          public imageService: AppImagesService
      ) { }
 
      ngOnInit() {
           this.projectCategroiesService.getAll().then(cats => this.projectCategories = cats)
           .catch(err=>console.error(err))
-          this.route.params.subscribe(params => {
+          this.subscription = this.route.params.subscribe(params => {
               let projectId: number = parseInt(params['projectId'])
                if(!Number.isInteger(projectId)) {
                     this.router.navigate(['/admin'])
                }
                else {
-                    this.projectsService.getOne(projectId).then((project: Project) => {
-                         this.project = project
-                         this.project_completion_time_edit = this.project.completionTime?new Date(this.project.completionTime):null
-                    }).catch(err=>console.error(err))
+                    this.loadProject(projectId)
                }
           })
      }
 
-     ngAfterViewInit() {
+     loadProject(projectId: number): Promise<void> {
+          return new Promise((resolve, reject) => {
+               this.projectsService.getOne(projectId)
+               .then((project: Project) => {
+                    this.project = project
+                    this.project_completion_time_edit = this.project.completionTime?new Date(this.project.completionTime):null
+                    resolve()
+               }).catch(err=>reject(err))
+          })
+     }
+
+     ngOnDestroy() {
+          if(this.subscription)
+          this.subscription.unsubscribe()
      }
 
      save_project_changes() {
           this.project.completionTime = new Date(this.project_completion_time_edit).getTime()
           this.projectsService.update(this.project).then(() => {
-               this.router.navigate(['/admin', 'projects'])
-          })
+               this.isGeneralEditMode = false
+          }).catch(err=>console.error(err))
      }
 
-     delete_project_dialog_open() {
-          this.delete_project_dialog_visible = true
+     discard_project_changes() {
+          this.loadProject(this.project.id).then(() => {
+               this.isGeneralEditMode = false
+          }).catch(err=>console.error(err))
      }
 
-     delete_project_dialog_submit() {
-          this.projectsService.delete(this.project.id).then(() => {
-               this.delete_project_dialog_visible = false
-               this.router.navigate(['/admin','projects'])
-          })
+
+     
+
+     uploadNewImage(evt) {
+          let file: File = evt.target.files.item(0)
+          let image: AppImage = new AppImage()
+          image.name = file.name
+          let formData = new FormData()
+          formData.append('image', file)
+          formData.append('name', file.name)
+          this.imageService.uploadInProject(formData, this.project.id)
+          .then((newId: number) => {
+               this.loadProject(this.project.id).then(() => {
+               }).catch(err=>console.error(err))
+          }).catch(err=>console.error(err))
+     }
+
+     
+
+
+
+     deleteImageFromProjectDialogVisible: boolean = false
+     deleteImageFromProjectDialogImage: AppImage
+
+     deleteImageFromProjectDialogOpen(image: AppImage) {
+          this.deleteImageFromProjectDialogImage = image
+          this.deleteImageFromProjectDialogVisible = true
+     }
+
+     deleteImageFromProjectDialogConfirm() {
+          this.imageService.deleteInProject(this.project.id, this.deleteImageFromProjectDialogImage.id)
+          .then(() => {
+               this.loadProject(this.project.id).then(() => {
+                    this.deleteImageFromProjectDialogDiscard()
+               }).catch(err=>console.error(err))
+          }).catch(err=>console.error(err))
+     }
+
+     deleteImageFromProjectDialogDiscard() {
+          this.deleteImageFromProjectDialogImage = null
+          this.deleteImageFromProjectDialogVisible = false
+     }
+
+
+     incrementImagePriority(image: any) {
+          this.imageService.updateImagePriorityInProject(this.project.id, image.id, image.priority+1).then(() => {
+               this.loadProject(this.project.id).then(() => {
+
+               }).catch(err => console.error(err))
+          }).catch(err=>console.error(err))
+     }
+
+     decrementImagePriority(image: any) {
+          this.imageService.updateImagePriorityInProject(this.project.id, image.id, image.priority-1).then(() => {
+               this.loadProject(this.project.id).then(() => {
+
+               }).catch(err => console.error(err))
+          }).catch(err=>console.error(err))
      }
 }

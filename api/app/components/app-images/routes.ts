@@ -76,7 +76,52 @@ router.get("/oneObject/:appImageId", (req: Request, res: Response) => {
     }
 })
 
-router.post("/createNew", (req: Request, res: Response) => {
+router.post("/new", (req: Request, res: Response) => {
+    imageUploader(req, res, (err) => {
+        if (err) {
+            logger.error(toErrorString(req, err))
+            res.status(200).json({
+                success: false,
+                error: err
+            })
+        }
+        else {
+            let filename: string = req.file.filename
+            let idStr: string = filename.split('.')[0]
+            let id: number = parseInt(idStr)
+            res.status(200).json({
+                success: true,
+                newAppImageId: id
+            })
+        }
+    })
+})
+
+router.post("/newInProject", (req: Request, res: Response) => {
+    imageUploader(req, res, (err) => {
+        if (err) {
+            logger.error(toErrorString(req, err))
+            res.status(200).json({
+                success: false,
+                error: err
+            })
+        }
+        else {
+            let filename: string = req.file.filename
+            let idStr: string = filename.split('.')[0]
+            let imageId: number = parseInt(idStr)
+            let projectId: number = parseInt(req.body.projectId)
+            db.newInProject(projectId, imageId).then(() => {
+                res.status(200).json({
+                    success: true,
+                    newAppImageId: imageId
+                })
+            }).catch(err => console.error(err))
+        }
+    })
+})
+
+router.post("/newInService", (req: Request, res: Response) => {
     imageUploader(req, res, (err) => {
         if (err) {
             logger.error(toErrorString(req, err))
@@ -124,6 +169,92 @@ router.post("/delete/:appImageId", (req: Request, res: Response) => {
         res.status(200).json({
             success: false,
             error: 'Invalid parameter : appImageId'
+        })
+    }
+})
+
+router.post("/deleteInProject/:projectId/:appImageId", (req: Request, res: Response) => {
+    let appImageId: number = parseInt(req.params.appImageId)
+    let projectId: number = parseInt(req.params.projectId)
+    if(Number.isInteger(appImageId) && appImageId && Number.isInteger(projectId) && projectId) {
+        db.deleteInProject(projectId, appImageId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : projectId || appImageId'
+        })
+    }
+})
+
+router.post("/deleteInService/:serviceId/:appImageId", (req: Request, res: Response) => {
+    let appImageId: number = parseInt(req.params.appImageId)
+    let serviceId: number = parseInt(req.params.serviceId)
+    if(Number.isInteger(appImageId) && appImageId && Number.isInteger(serviceId) && serviceId) {
+        db.deleteInService(serviceId, appImageId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : serviceId || appImageId'
+        })
+    }
+})
+
+router.post("/updatePriorityInProject/:projectId/:appImageId", (req: Request, res: Response) => {
+    let appImageId: number = parseInt(req.params.appImageId)
+    let projectId: number = parseInt(req.params.projectId)
+    let priority: number = req.body.priority
+    if(Number.isInteger(appImageId) && appImageId && Number.isInteger(projectId) && projectId && Number.isInteger(priority) && priority) {
+        db.updatePriorityInProject(projectId, appImageId, priority).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : projectId||appImageId||priority'
+        })
+    }
+})
+
+router.post("/updatePriorityInService/:serviceId/:appImageId", (req: Request, res: Response) => {
+    let appImageId: number = parseInt(req.params.appImageId)
+    let serviceId: number = parseInt(req.params.serviceId)
+    let priority: number = req.body.priority
+    if(Number.isInteger(appImageId) && appImageId && Number.isInteger(serviceId) && serviceId && Number.isInteger(priority) && priority) {
+        db.deleteInService(serviceId, appImageId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : serviceId||appImageId||priority'
         })
     }
 })

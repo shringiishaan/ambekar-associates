@@ -8,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar';
 
+import { MatTabsModule } from '@angular/material/tabs';
+
 import { AppComponent } from './app.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { HomeComponent } from './view/home/home.component';
@@ -67,7 +69,8 @@ import { AdminServiceEditComponent } from './view/admin/dashboard/admin-service-
         AngularFontAwesomeModule,
         AppRoutingModule,
         DialogModule,
-        CalendarModule
+        CalendarModule,
+        MatTabsModule
     ],
 
     providers: [],

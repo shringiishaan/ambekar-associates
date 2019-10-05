@@ -25,7 +25,7 @@
                 <th>
                   Category Name
                 </th>
-                <th>
+                <th class="text-center">
                   Priority
                 </th>
                 <th></th>
@@ -36,14 +36,14 @@
                 <td>
                   {{category.name}}
                 </td>
-                <td>
+                <td class="text-center">
                   {{category.priority}}
                 </td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary" (click)="delete_project_category_trigger(category)">
+                <td class="text-right">
+                  <button class="btn btn-sm btn-outline-danger" (click)="delete_project_category_trigger(category)">
                     <i class="fa fa-trash"></i>
                   </button>
-                  <button class="btn btn-sm btn-outline-secondary ml-2" (click)="edit_project_category_trigger(category)">
+                  <button class="btn btn-sm btn-outline-info ml-2" (click)="edit_project_category_trigger(category)">
                     <i class="fa fa-edit"></i>
                   </button>
                 </td>

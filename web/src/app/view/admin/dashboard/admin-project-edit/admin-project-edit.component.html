@@ -7,101 +7,158 @@
     <div class="col-12 col-lg-10">
       <div class="row mt-3">
         <div class="col-12">
-          <button class="btn btn-sm btn-warning float-right" (click)="delete_project_dialog_open()">
-            <i class="fa fa-trash mr-1"></i>
-            Delete
-          </button>
-          <button class="btn btn-sm btn-success float-right mr-2" (click)="save_project_changes()">
-            <i class="fa fa-save mr-1"></i>
-            Save
-          </button>
-          <button class="btn btn-sm btn-secondary float-right mr-2" routerLink="/admin/projects">
+          <button class="btn btn-sm btn-secondary float-right" routerLink="/admin/projects">
             <i class="fa fa-reply mr-1"></i>
-            Discard
+            Back
           </button>
           <h4 class='text-light'>
             <i class="fa fa-edit mr-2"></i>
-            Edit Project
+            {{project.title}}
           </h4>
         </div>
       </div>
       <div class="row mt-4">
         <div class="col">
           <div class="card card-body">
-            <div class="row py-2">
-              <div class="col-12">
-                <h5 class="mb-3">Project Name</h5>
-                <input type="text" [(ngModel)]="project.title" class="form-control" />
-              </div>
-            </div>
-            <hr />
-            <div class="row py-2">
-              <div class="col-12">
-                <h5 class="mb-3">Completion Time</h5>
-                <p-calendar [(ngModel)]="project_completion_time_edit" view="month" dateFormat="MM, yy"
-                  [yearNavigator]="true" yearRange="1950:2030"></p-calendar>
-              </div>
-            </div>
-            <hr />
-            <div class="row py-2">
-              <div class="col-12">
-                <h5>Category</h5>
-                <select type="text" [(ngModel)]="project.projectCategoryName" class="form-control">
-                  <option *ngFor="let cat of projectCategories" [value]="cat.name">{{cat.name}}</option>
-                </select>
-              </div>
-            </div>
-            <hr />
-            <div class="row">
-              <div class="col-12">
-                <button class="btn btn-sm btn-info float-right" (click)="new_image_dialog_open()">
-                  <i class="fa fa-plus"></i>
-                  New Image
-                </button>
-                <h5>Images ()</h5>
-              </div>
-            </div>
-            <div class="row my-3">
-              <div class="col-12 col-lg-3" *ngFor="let image of project.images; let i=index;">
-                <div class="card">
-                  <img class="card-img-top" src="{{rest.API_URI}}/image/{{image.key}}" alt="Card image cap">
-                  <div class="card-body p-2">
-                    <p class="card-text">Key : {{image.key}}</p>
-                    <a class="btn btn-sm btn-info text-light mr-2" *ngIf="i!==0" (click)="make_image_first(image)">
-                      Make First
-                    </a>
-                    <a class="btn btn-sm btn-warning" (click)="remove_image_from_project(image)">
-                      <i class="fa fa-trash text-light"></i>
-                    </a>
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h5>
+                    <i class="fa fa-cogs mr-2"></i>
+                    General
+                  </h5>
+                </ng-template>
+                <div class="container-fluid pt-4">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <button class="btn btn-sm btn-outline-info float-right" (click)="isGeneralEditMode=true" *ngIf="!isGeneralEditMode">
+                          <i class="fa fa-edit mr-1"></i>
+                          Edit
+                        </button>
+                        <button class="btn btn-sm btn-success float-right" (click)="save_project_changes()" *ngIf="isGeneralEditMode">
+                          <i class="fa fa-save mr-1"></i>
+                          Save Changes
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary float-right mr-2" (click)="discard_project_changes()" *ngIf="isGeneralEditMode">
+                          <i class="fa fa-times mr-1"></i>
+                          Discard Changes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" [(ngModel)]="project.title" class="form-control" [disabled]="!isGeneralEditMode" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Completion Time</label>
+                        <p-calendar [(ngModel)]="project_completion_time_edit" view="month" dateFormat="MM, yy"
+                          [yearNavigator]="true" yearRange="1950:2030"
+                          [disabled]="!isGeneralEditMode"
+                          class="d-block"></p-calendar>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select type="text" [(ngModel)]="project.projectCategoryName" class="form-control" [disabled]="!isGeneralEditMode">
+                          <option *ngFor="let cat of projectCategories" [value]="cat.name">{{cat.name}}</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <hr />
-            <div class="row">
-              <div class="col-12">
-                <h5 class="mb-2">Article</h5>
-                <textarea class="form-control" [(ngModel)]="articleData"></textarea>
-                <!-- <quill-editor [(ngModel)]="project.long_description" [modules]="{
-                                                    toolbar: [
-                                                    ['bold', 'italic', 'underline', 'strike'],
-                                                    ['blockquote', 'code-block'],
-                                                    [{ 'header': 1 }, { 'header': 2 }],
-                                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                                    [{ 'script': 'sub'}, { 'script': 'super' }],
-                                                    [{ 'indent': '-1'}, { 'indent': '+1' }],
-                                                    [{ 'direction': 'rtl' }],
-                                                    [{ 'size': ['small', false, 'large', 'huge'] }],
-                                                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                                                    [{ 'color': [] }, { 'background': [] }],
-                                                    [{ 'font': [] }],
-                                                    [{ 'align': [] }],
-                                                    ['clean'],
-                                                    []
-                                                    ]
-                                              }"></quill-editor> -->
-              </div>
-            </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h5>
+                    <i class="fa fa-file-image-o mr-2"></i>
+                    Images
+                  </h5>
+                </ng-template>
+                <div class="container-fluid pt-4">
+                  <div class="row">
+                    <div class="col-12">
+                      <input #imageInput type="file" name="image" (change)="uploadNewImage($event)" class="d-none" accept="image/png,image/jpeg" />
+                      <button (click)="imageInput.click()" class="btn btn-sm btn-outline-info float-right">
+                        <i class="fa fa-upload mr-1"></i>
+                        Upload Image
+                      </button>
+                      <h5>Images ({{project.imageIds.length}})</h5>
+                      <hr />
+                      <div class="row">
+                        <div class="col-3" *ngFor="let image of project.imageIds">
+                          <div class="card card-body p-0">
+                            <img class="w-100" src="{{rest.API_URI}}/images/one/{{image.id}}" />
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <button class="btn btn-outline-info" type="button" (click)="decrementImagePriority(image)">
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                              </div>
+                              <input disabled="true" class="form-control" name="priority" [value]="image.priority" type="number" />
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-info" type="button" (click)="incrementImagePriority(image)">
+                                  <i class="fa fa-caret-up"></i>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button" (click)="deleteImageFromProjectDialogOpen(image)">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h5>
+                    <i class="fa fa-file-text-o mr-2"></i>
+                    Article
+                  </h5>
+                </ng-template>
+                <div class="container-fluid pt-4">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Article</label>
+                        <textarea rows="20" class="form-control" [(ngModel)]="articleData"></textarea>
+                      </div>
+                      <!-- <quill-editor [(ngModel)]="project.long_description" [modules]="{
+                                                          toolbar: [
+                                                          ['bold', 'italic', 'underline', 'strike'],
+                                                          ['blockquote', 'code-block'],
+                                                          [{ 'header': 1 }, { 'header': 2 }],
+                                                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                                          [{ 'script': 'sub'}, { 'script': 'super' }],
+                                                          [{ 'indent': '-1'}, { 'indent': '+1' }],
+                                                          [{ 'direction': 'rtl' }],
+                                                          [{ 'size': ['small', false, 'large', 'huge'] }],
+                                                          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                                                          [{ 'color': [] }, { 'background': [] }],
+                                                          [{ 'font': [] }],
+                                                          [{ 'align': [] }],
+                                                          ['clean'],
+                                                          []
+                                                          ]
+                                                    }"></quill-editor> -->
+                    </div>
+                  </div>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
           </div>
         </div>
       </div>
@@ -111,43 +168,20 @@
 
 
 
-<p-dialog [(visible)]="new_project_category_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150" [width]="400">
+
+<p-dialog [(visible)]="deleteImageFromProjectDialogVisible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
+  [showHeader]="true" [positionTop]="150"
+  *ngIf="deleteImageFromProjectDialogImage">
 
   <p-header>
-    Add Category
+    Delete Image?
   </p-header>
 
-  <div class="row no-gutters mb-3" *ngIf="new_project_category">
-    <div class="col-12">
-      <select type="text" [(ngModel)]="new_project_category.name" class="form-control">
-        <option *ngFor="let cat of project_categories" [value]="cat.name">{{cat.name}}</option>
-      </select>
-    </div>
+  <div class="container-fluid">    
+      <button class="btn btn-danger btn-sm float-right" (click)="deleteImageFromProjectDialogConfirm()">
+        <i class="fa fa-trash mr-1"></i>
+        Delete
+      </button>
   </div>
-
-  <button class="btn btn-success btn-sm float-right" (click)="new_project_category_dialog_submit()">Add
-    Category</button>
-
-</p-dialog>
-
-
-
-
-<p-dialog [(visible)]="delete_project_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150" [width]="600"
-  *ngIf="project">
-
-  <p-header>
-    Delete Project
-  </p-header>
-
-  <div class="row no-gutters py-3">
-    <div class="col-12">
-      {{project.title}}
-    </div>
-  </div>
-
-  <button class="btn btn-danger btn-sm" (click)="delete_project_dialog_submit()">Delete</button>
 
 </p-dialog>

@@ -9,8 +9,9 @@
                <div class="row mt-3">
                     <div class="col-12">
                          <input #imageInput type="file" name="image" (change)="uploadNewImage($event)" class="d-none" accept="image/png,image/jpeg" />
-                         <button (click)="imageInput.click()" class="btn btn-sm btn-info float-right mt-2">
-                              Upload
+                         <button (click)="imageInput.click()" class="btn btn-sm btn-outline-info float-right">
+                              <i class="fa fa-upload mr-1"></i>
+                              Upload Image
                          </button>
                          <h4 class="text-light">
                               <i class="fa fa-picture-o mr-2"></i>
@@ -22,11 +23,14 @@
                     <div class="col-12 col-md-6 col-lg-3 pb-3" *ngFor="let image of appImages">
                          <div class="card">
                               <img src="{{rest.API_URI}}/images/one/{{image.id}}" class="card-img-top" alt="Image" />
-                              <div class="card-body p-2">
+                              <div class="card-body px-2 pb-1 pt-2">
                                    <div class="row">
                                         <div class="col-12">
-                                             <i class="fa fa-trash text-warning float-right" style="cursor: pointer;font-size:1.2em;" (click)="delete_app_image_dialog_open(image)"></i>
-                                             <small class="text-muted">{{image.name}}</small>
+                                             <button class="btn btn-sm btn-outline-danger float-right ml-2"
+                                                       (click)="delete_app_image_dialog_open(image)">
+                                                  <i class="fa fa-trash"></i>
+                                             </button>
+                                             <small class="text-light">{{image.name}}</small>
                                         </div>
                                    </div>
                               </div>

@@ -27,14 +27,15 @@
                                              (click)="delete_project_dialog_open(project)">
                                              <i class="fa fa-trash"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-secondary float-right"
+                                        <button class="btn btn-sm btn-outline-info float-right"
                                              routerLink="/admin/project/{{project.id}}">
                                              <i class="fa fa-edit"></i>
                                         </button>
                                         <h5>
                                              {{project.title}}
                                         </h5>
-                                        <small class="text-muted">
+                                        <hr *ngIf="project.completionTime || project.projectCategoryName" />
+                                        <small class="text-light">
                                              <div *ngIf="project.completionTime">
                                                   <i class="fa fa-clock-o mr-1"></i>
                                                   Completed On : {{project.completionTime | date:'MMMM, y'}}

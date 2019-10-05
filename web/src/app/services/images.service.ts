@@ -37,9 +37,50 @@ export class AppImagesService {
 
   uploadNew(formData: FormData): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post(this.rest.API_URI+this.API_APPEND+'/createNew', formData)
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/new', formData)
       .subscribe((data:any) => {
         if(data && data.success) resolve(data.newAppImageId)
+        else reject(data.error)
+      })
+    })
+  }
+
+  deleteInProject(projectId: number, appImageId: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/deleteInProject/'+projectId+'/'+appImageId, null)
+      .subscribe((data:any) => {
+        if(data && data.success) resolve()
+        else reject(data.error)
+      })
+    })
+  }
+
+  uploadInProject(formData: FormData, projectId: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+      formData.append('projectId', projectId.toString())
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/newInProject', formData)
+      .subscribe((data:any) => {
+        if(data && data.success) resolve(data.newAppImageId)
+        else reject(data.error)
+      })
+    })
+  }
+
+  updateImagePriorityInProject(projectId: number, appImageId: number, priority: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/updatePriorityInProject/'+projectId+'/'+appImageId, {priority:priority})
+      .subscribe((data:any) => {
+        if(data && data.success) resolve()
+        else reject(data.error)
+      })
+    })
+  }
+
+  updateImagePriorityInService(serviceId: number, appImageId: number, priority: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/updatePriorityInService/'+serviceId+'/'+appImageId, {priority:priority})
+      .subscribe((data:any) => {
+        if(data && data.success) resolve()
         else reject(data.error)
       })
     })
