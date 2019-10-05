@@ -6,9 +6,9 @@ import appImageRoutes from "../components/app-images/routes"
 
 let router = express.Router()
 
-router.use('/service', serviceRoutes)
+router.use('/services', serviceRoutes)
 router.use('/projects', projectRoutes)
-router.use('/projectCategory', projectCategoryRoutes)
+router.use('/projectCategories', projectCategoryRoutes)
 router.use('/images', appImageRoutes)
 
 export default router

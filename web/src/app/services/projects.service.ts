@@ -37,7 +37,7 @@ export class ProjectsService {
 
   createNew(project: Project): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.http.post(this.rest.API_URI+this.API_APPEND+'/createNew', {project:project})
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/new', {project:project})
       .subscribe((data:any) => {
         if(data && data.success) resolve(data.newProjectId)
         else reject(data.error)
