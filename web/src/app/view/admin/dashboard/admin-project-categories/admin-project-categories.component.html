@@ -20,7 +20,7 @@
       <div class="row mt-4">
         <div class="col-12 col-md-6">
           <div class="list-group">
-            <a class="list-group-item list-group-item" *ngFor="let category of appState.state.project_categories">
+            <a class="list-group-item list-group-item" *ngFor="let category of projectCategories">
               <button class="btn btn-sm btn-warning float-right" (click)="delete_project_category_trigger(category)">
                 <i class="fa fa-trash"></i>
               </button>
@@ -36,41 +36,95 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="new_category_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150" [width]="300">
+
+<p-dialog [(visible)]="new_category_dialog_visible" 
+    [modal]="true" 
+    [blockScroll]="true" 
+    [dismissableMask]="true"
+    [showHeader]="true" 
+    [positionTop]="150" 
+    [width]="300">
 
   <p-header>
-    New Project Category
+    New Category
   </p-header>
 
-  <input class="form-control" type="text" [(ngModel)]="new_category_name" />
-
-  <button class="btn btn-sm btn-success mt-2" (click)="new_category_submit()">Save</button>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <input class="form-control" type="text" [(ngModel)]="new_category_name" />
+      </div>
+    </div>
+    <div class="row mt-3 mb-2">
+      <div class="col-12 text-right">
+        <button class="btn btn-sm btn-success" (click)="new_category_submit()">
+            <i class="fa fa-check mr-1"></i>
+            Save
+        </button>
+      </div>
+    </div>
+  </div>
 
 </p-dialog>
 
-<p-dialog [(visible)]="delete_category_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150" [width]="300">
+<p-dialog [(visible)]="delete_category_dialog_visible" 
+    [modal]="true" 
+    [blockScroll]="true" 
+    [dismissableMask]="true"
+    [showHeader]="true" 
+    [positionTop]="150" 
+    [width]="300"
+    *ngIf="delete_project_category">
 
-  <p-header>
-    Delete Project Category
-  </p-header>
+    <p-header>
+      Delete Category
+    </p-header>
 
-  Category : <h5 *ngIf="delete_project_category">{{delete_project_category.name}}</h5>
-
-  <button class="btn btn-sm btn-danger mt-2" (click)="delete_project_category_confirm()">Delete</button>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          {{delete_project_category.name}}
+        </div>
+      </div>
+      <div class="row mt-3 mb-2">
+        <div class="col-12 text-right">
+          <button class="btn btn-sm btn-danger" (click)="delete_project_category_confirm()">
+              <i class="fa fa-trash mr-1"></i>
+              Delete
+          </button>
+        </div>
+      </div>
+    </div>
 
 </p-dialog>
 
-<p-dialog [(visible)]="edit_category_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150" [width]="300">
+<p-dialog [(visible)]="edit_category_dialog_visible" 
+    [modal]="true" 
+    [blockScroll]="true" 
+    [dismissableMask]="true"
+    [showHeader]="true" 
+    [positionTop]="150" 
+    [width]="300"
+    *ngIf="edit_project_category">
 
-  <p-header>
-    Edit Project Category
-  </p-header>
+    <p-header>
+      Edit Project Category
+    </p-header>
 
-  <input class="form-control" type="text" *ngIf="edit_project_category" [(ngModel)]="edit_project_category.name" />
-
-  <button class="btn btn-sm btn-success mt-2" (click)="edit_project_category_confirm()">Save</button>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <input class="form-control" type="text" [(ngModel)]="edit_project_category.name" />
+        </div>
+      </div>
+      <div class="row mt-3 mb-2">
+        <div class="col-12 text-right">
+          <button class="btn btn-sm btn-success" (click)="edit_project_category_confirm()">
+              <i class="fa fa-check mr-1"></i>
+              Save
+          </button>
+        </div>
+      </div>
+    </div>
 
 </p-dialog>
