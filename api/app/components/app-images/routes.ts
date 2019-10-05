@@ -133,11 +133,14 @@ router.post("/newInService", (req: Request, res: Response) => {
         else {
             let filename: string = req.file.filename
             let idStr: string = filename.split('.')[0]
-            let id: number = parseInt(idStr)
-            res.status(200).json({
-                success: true,
-                newAppImageId: id
-            })
+            let imageId: number = parseInt(idStr)
+            let serviceId: number = parseInt(req.body.serviceId)
+            db.newInService(serviceId, imageId).then(() => {
+                res.status(200).json({
+                    success: true,
+                    newAppImageId: imageId
+                })
+            }).catch(err => console.error(err))
         }
     })
 })
@@ -242,7 +245,7 @@ router.post("/updatePriorityInService/:serviceId/:appImageId", (req: Request, re
     let serviceId: number = parseInt(req.params.serviceId)
     let priority: number = req.body.priority
     if(Number.isInteger(appImageId) && appImageId && Number.isInteger(serviceId) && serviceId && Number.isInteger(priority) && priority) {
-        db.deleteInService(serviceId, appImageId).then(() => {
+        db.updatePriorityInService(serviceId, appImageId, priority).then(() => {
             res.status(200).json({success: true})
         }).catch((error) => {
             logger.error(toErrorString(req, error))

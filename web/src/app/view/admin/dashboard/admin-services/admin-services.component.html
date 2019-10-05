@@ -34,6 +34,23 @@
                 </h5>
               </div>
             </div>
+            <div class="row mt-2">
+              <div class="col">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="button" (click)="decrementPriority(service)">
+                      <i class="fa fa-caret-down"></i>
+                    </button>
+                  </div>
+                  <input disabled="true" class="form-control" name="priority" [value]="service.priority" type="number" />
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="incrementPriority(service)">
+                      <i class="fa fa-caret-up"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -32,6 +32,24 @@ export class AdminServicesComponent implements OnInit {
   }
 
 
+  incrementPriority(service: Service) {
+    service.priority++
+    this.servicesService.update(service).then(() => {
+      this.loadServices().then(() => {
+
+      }).catch(err=>console.error(err))
+    }).catch(err=>console.error(err))
+  }
+
+  decrementPriority(service: Service) {
+    service.priority--
+    this.servicesService.update(service).then(() => {
+      this.loadServices().then(() => {
+
+      }).catch(err=>console.error(err))
+    }).catch(err=>console.error(err))
+  }
+
 
   new_service_dialog_visible: boolean = false
   new_service: Service

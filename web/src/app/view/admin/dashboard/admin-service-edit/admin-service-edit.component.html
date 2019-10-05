@@ -1,111 +1,151 @@
 <admin-navbar></admin-navbar>
-
-<div class="container-fluid" [ngStyle]="adminS.dashboard_container_style" *ngIf="service_edit">
+<div class="container-fluid" [ngStyle]="adminS.dashboard_container_style" *ngIf="service">
   <div class="row">
     <div class="d-none d-lg-block col-lg-2">
       <admin-lg-menu [active_tab]="'services'"></admin-lg-menu>
     </div>
     <div class="col-12 col-lg-10">
-      <div class="row">
+      <div class="row mt-3">
         <div class="col-12">
-          <button class="btn btn-sm btn-warning float-right" (click)="delete_service_dialog_open()">
-            <i class="fa fa-trash mr-1"></i>
-            Delete
-          </button>
-          <button class="btn btn-sm btn-success float-right mr-2" (click)="save_service_changes()">
-            <i class="fa fa-save mr-1"></i>
-            Save
-          </button>
-          <button class="btn btn-sm btn-secondary float-right mr-2" routerLink="/admin/services">
+          <button class="btn btn-sm btn-secondary float-right" routerLink="/admin/services">
             <i class="fa fa-reply mr-1"></i>
-            Discard
+            Back
           </button>
-          <h4>
+          <h4 class='text-light'>
             <i class="fa fa-edit mr-2"></i>
-            Edit Service
+            {{service.title}}
           </h4>
         </div>
       </div>
-      <hr />
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/admin">Admin</a></li>
-          <li class="breadcrumb-item"><a routerLink="/admin/services">Manage Services</a></li>
-          <li class="breadcrumb-item active">{{service_edit.title}}</li>
-        </ol>
-      </nav>
-      <hr />
-      <div class="row">
-        <div class="col-12">
-          <div class="card card-body mb-3 p-3">
-            <div class="row">
-              <div class="col">
-                <div class="row py-2">
-                  <div class="col-12">
-                    <h5 class="mb-3">Service Name</h5>
-                    <input type="text" [(ngModel)]="service_edit.title" class="form-control" />
+      <div class="row mt-4">
+        <div class="col">
+          <div class="card card-body">
+            <mat-tab-group>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h5>
+                    <i class="fa fa-cogs mr-2"></i>
+                    General
+                  </h5>
+                </ng-template>
+                <div class="container-fluid pt-4">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <button class="btn btn-sm btn-outline-info float-right" (click)="isGeneralEditMode=true" *ngIf="!isGeneralEditMode">
+                          <i class="fa fa-edit mr-1"></i>
+                          Edit
+                        </button>
+                        <button class="btn btn-sm btn-success float-right" (click)="save_service_changes()" *ngIf="isGeneralEditMode">
+                          <i class="fa fa-save mr-1"></i>
+                          Save Changes
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary float-right mr-2" (click)="discard_service_changes()" *ngIf="isGeneralEditMode">
+                          <i class="fa fa-times mr-1"></i>
+                          Discard Changes
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <hr />
-                <div class="row">
-                  <div class="col-12">
-                    <button class="btn btn-sm btn-info float-right" (click)="new_image_dialog_open()">
-                      <i class="fa fa-plus"></i>
-                      New Image
-                    </button>
-                    <h5>Images ({{service_edit.images.length}})</h5>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Service Title</label>
+                        <input type="text" [(ngModel)]="service.title" class="form-control" [disabled]="!isGeneralEditMode" />
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div class="row my-3">
-                  <div class="col-12 col-lg-3" *ngFor="let image of service_edit.images; let i=index;">
-                    <div class="card">
-                      <img class="card-img-top" src="{{rest.API_URI}}/image/{{image.key}}" alt="Card image cap">
-                      <div class="card-body p-2">
-                        <p class="card-text">Key : {{image.key}}</p>
-                        <a class="btn btn-sm btn-info text-light mr-2" *ngIf="i!==0" (click)="make_image_first(image)">
-                          Make First
-                        </a>
-                        <a class="btn btn-sm btn-warning" (click)="remove_image_from_service(image)">
-                          <i class="fa fa-trash text-light"></i>
-                        </a>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Priority</label>
+                        <input type="number" [(ngModel)]="service.priority" class="form-control" [disabled]="!isGeneralEditMode" />
                       </div>
                     </div>
                   </div>
                 </div>
-                <hr />
-                <div class="row">
-                  <div class="col-12">
-                    <h5 class="mb-2">Short Description</h5>
-                    <textarea class="form-control" [(ngModel)]="service_edit.short_description" placeholder="Short Description"></textarea>
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h5>
+                    <i class="fa fa-file-image-o mr-2"></i>
+                    Images
+                  </h5>
+                </ng-template>
+                <div class="container-fluid pt-4">
+                  <div class="row">
+                    <div class="col-12">
+                      <input #imageInput type="file" name="image" (change)="uploadNewImage($event)" class="d-none" accept="image/png,image/jpeg" />
+                      <button (click)="imageInput.click()" class="btn btn-sm btn-outline-info float-right">
+                        <i class="fa fa-upload mr-1"></i>
+                        Upload Image
+                      </button>
+                      <h5>Images ({{service.imageIds.length}})</h5>
+                      <hr />
+                      <div class="row">
+                        <div class="col-3" *ngFor="let image of service.imageIds">
+                          <div class="card card-body p-0 mb-3">
+                            <img class="w-100" src="{{rest.API_URI}}/images/one/{{image.id}}" />
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <button class="btn btn-outline-info" type="button" (click)="decrementImagePriority(image)">
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                              </div>
+                              <input disabled="true" class="form-control" name="priority" [value]="image.priority" type="number" />
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-info" type="button" (click)="incrementImagePriority(image)">
+                                  <i class="fa fa-caret-up"></i>
+                                </button>
+                                <button class="btn btn-outline-danger" type="button" (click)="deleteImageFromServiceDialogOpen(image)">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <hr />
-                <div class="row">
-                  <div class="col-12">
-                    <h5 class="mb-2">Long Description</h5>
-                    <textarea class="form-control" [(ngModel)]="service_edit.long_description"></textarea>
-                    <!-- <quill-editor class='text-dark' [(ngModel)]="service_edit.long_description" [modules]="{
-                                                       toolbar: [
-                                                       ['bold', 'italic', 'underline', 'strike'],
-                                                       ['blockquote', 'code-block'],
-                                                       [{ 'header': 1 }, { 'header': 2 }],
-                                                       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                                                       [{ 'script': 'sub'}, { 'script': 'super' }],
-                                                       [{ 'indent': '-1'}, { 'indent': '+1' }],
-                                                       [{ 'direction': 'rtl' }],
-                                                       [{ 'size': ['small', false, 'large', 'huge'] }],
-                                                       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                                                       [{ 'color': [] }, { 'background': [] }],
-                                                       [{ 'font': [] }],
-                                                       [{ 'align': [] }],
-                                                       ['clean'],
-                                                       []
-                                                       ]
-                                                  }"></quill-editor> -->
+              </mat-tab>
+              <mat-tab>
+                <ng-template mat-tab-label>
+                  <h5>
+                    <i class="fa fa-file-text-o mr-2"></i>
+                    Article
+                  </h5>
+                </ng-template>
+                <div class="container-fluid pt-4">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <button class="btn btn-sm btn-outline-info float-right" (click)="isArticleEditMode=true" *ngIf="!isArticleEditMode">
+                          <i class="fa fa-edit mr-1"></i>
+                          Edit
+                        </button>
+                        <button class="btn btn-sm btn-success float-right" (click)="save_service_article_changes()" *ngIf="isArticleEditMode">
+                          <i class="fa fa-save mr-1"></i>
+                          Save Changes
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary float-right mr-2" (click)="discard_service_article_changes()" *ngIf="isArticleEditMode">
+                          <i class="fa fa-times mr-1"></i>
+                          Discard Changes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label>Article</label>
+                        <textarea rows="20" class="form-control" [(ngModel)]="articleData" [disabled]="!isArticleEditMode"></textarea>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </mat-tab>
+            </mat-tab-group>
           </div>
         </div>
       </div>
@@ -116,38 +156,19 @@
 
 
 
-<p-dialog [(visible)]="new_image_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150" [width]="400">
+<p-dialog [(visible)]="deleteImageFromServiceDialogVisible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
+  [showHeader]="true" [positionTop]="150"
+  *ngIf="deleteImageFromServiceDialogImage">
 
   <p-header>
-    New Image
+    Delete Image?
   </p-header>
 
-  <div class="row no-gutters mb-3" *ngIf="new_image">
-    <div class="col-12">
-      <input type="text" [(ngModel)]="new_image.key" class="form-control" placeholder="Image Key" />
-    </div>
+  <div class="container-fluid">    
+      <button class="btn btn-danger btn-sm float-right" (click)="deleteImageFromServiceDialogConfirm()">
+        <i class="fa fa-trash mr-1"></i>
+        Delete
+      </button>
   </div>
-
-  <button class="btn btn-success float-right btn-sm" (click)="new_image_dialog_submit()">Add Image</button>
-
-</p-dialog>
-
-
-
-<p-dialog [(visible)]="delete_service_dialog_visible" [modal]="true" [blockScroll]="true" [dismissableMask]="true"
-  [showHeader]="true" [positionTop]="150">
-
-  <p-header>
-    Delete Service
-  </p-header>
-
-  <div class="row no-gutters mb-3">
-    <div class="col-12">
-      <h5>{{service_edit.title}}</h5>
-    </div>
-  </div>
-
-  <button class="btn btn-danger btn-sm float-right" (click)="delete_service_dialog_submit()">Delete</button>
 
 </p-dialog>

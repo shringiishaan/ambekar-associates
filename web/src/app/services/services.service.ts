@@ -27,7 +27,7 @@ export class ServicesService {
 
   getOne(serviceId: number): Promise<Service> {
     return new Promise((resolve, reject) => {
-      this.http.get(this.rest.API_URI+this.API_APPEND+'/one'+serviceId)
+      this.http.get(this.rest.API_URI+this.API_APPEND+'/one/'+serviceId)
       .subscribe((data:any) => {
         if(data && data.success) resolve(data.service)
         else reject(data.error)

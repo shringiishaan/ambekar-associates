@@ -1,80 +1,161 @@
-import { Component, OnInit } from "@angular/core";
-import { AdminService } from "../../admin.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Service } from "src/app/models/service.model";
-import { AppImage } from "src/app/models/app-image.model";
-import { RestService } from "src/app/rest.service";
-import { ServicesService } from "src/app/services/services.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AdminService } from '../../admin.service';
+import { Service } from 'src/app/models/service.model';
+import { AppImage } from 'src/app/models/app-image.model';
+import { RestService } from 'src/app/rest.service';
+import { ServicesService } from 'src/app/services/services.service';
+import { AppImagesService } from 'src/app/services/images.service';
+
+declare var $:any
 
 @Component({
-  selector: "admin-service-edit",
-  templateUrl: "./admin-service-edit.component.html",
-  styleUrls: ["./admin-service-edit.component.css"]
+     selector: 'admin-service-edit',
+     templateUrl: './admin-service-edit.component.html',
+     styleUrls: ['./admin-service-edit.component.css']
 })
+
 export class AdminServiceEditComponent implements OnInit {
 
-  service_edit: Service
+     service: Service
 
-  delete_service_dialog_visible: boolean = false;
+     service_completion_time_edit: Date
 
-  new_image_dialog_visible: boolean = false;
+     articleData: string
 
-  new_image: AppImage
+     isGeneralEditMode: boolean
 
-  constructor(
-    public rest: RestService,
-    public adminS: AdminService,
-    public route: ActivatedRoute,
-    public router: Router,
-    public servicesService: ServicesService
-  ) {}
+     isArticleEditMode: boolean
 
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      let serviceId: number = parseInt(params["serviceId"]);
-      if (!Number.isInteger(serviceId)) {
-        this.router.navigate(["/admin"])
-      }
-      else {
-        this.servicesService.getOne(serviceId).then((service: Service) => {
-          this.service_edit = JSON.parse(JSON.stringify(service));
-        })
-      }
-    });
-  }
+     subscription
 
-  save_service_changes() {
-    this.servicesService.update(this.service_edit).then(() => {
-      this.router.navigate(["/admin", "services"])
-    })
-  }
+     constructor(
+          public rest: RestService,
+          public adminS: AdminService,
+          public route: ActivatedRoute,
+          public router: Router,
+          public servicesService: ServicesService,
+          public imageService: AppImagesService
+     ) { }
 
-  new_image_dialog_open() {
-    this.new_image = new AppImage();
-    this.new_image_dialog_visible = true;
-  }
+     ngOnInit() {
+          this.subscription = this.route.params.subscribe(params => {
+              let serviceId: number = parseInt(params['serviceId'])
+               if(!Number.isInteger(serviceId)) {
+                    this.router.navigate(['/admin'])
+               }
+               else {
+                    this.loadService(serviceId)
+                    this.loadServiceArticleData(serviceId)
+               }
+          })
+     }
 
-  new_image_dialog_submit() {
-    let maxP: number = 0
-    this.service_edit.imageIds.forEach(k=>maxP=(k.priority>maxP)?(k.priority+1):maxP)
-    this.service_edit.imageIds.push({priority:maxP,id:this.new_image.id})
-    this.new_image = null
-    this.new_image_dialog_visible = false
-  }
+     loadService(serviceId: number): Promise<void> {
+          return new Promise((resolve, reject) => {
+               this.servicesService.getOne(serviceId)
+               .then((service: Service) => {
+                    this.service = service
+                    resolve()
+               }).catch(err=>reject(err))
+          })
+     }
 
-  delete_service_dialog_open() {
-    this.delete_service_dialog_visible = true;
-  }
+     loadServiceArticleData(serviceId: number): Promise<void> {
+          return new Promise((resolve, reject) => {
+               this.servicesService.getArticleData(serviceId).then((data: string) => {
+                    this.articleData = data
+                    resolve()
+               }).catch(err=>reject(err))
+          })
+     }
 
-  delete_service_dialog_submit() {
-    this.servicesService.delete(this.service_edit.id).then(done => {
-      this.delete_service_dialog_visible = false
-      this.router.navigate(["/admin", "services"])
-    })
-  }
+     ngOnDestroy() {
+          if(this.subscription)
+          this.subscription.unsubscribe()
+     }
 
-  remove_image_from_service(image: AppImage) {
-    let ind = this.service_edit.imageIds.findIndex(i => i.id === image.id)
-    this.service_edit.imageIds.splice(ind, 1)
-  }
+     save_service_changes() {
+          this.servicesService.update(this.service).then(() => {
+               this.isGeneralEditMode = false
+          }).catch(err=>console.error(err))
+     }
+
+     discard_service_changes() {
+          this.loadService(this.service.id).then(() => {
+               this.isGeneralEditMode = false
+          }).catch(err=>console.error(err))
+     }
+
+     save_service_article_changes() {
+          this.servicesService.updateArticleData(this.service.id, this.articleData).then(() => {
+               this.discard_service_article_changes()
+          }).catch(err=>console.error(err))
+     }
+
+     discard_service_article_changes() {
+          this.loadServiceArticleData(this.service.id).then(() => {
+               this.isArticleEditMode = false
+          }).catch(err=>console.error(err))
+     }
+
+
+     
+
+     uploadNewImage(evt) {
+          let file: File = evt.target.files.item(0)
+          let image: AppImage = new AppImage()
+          image.name = file.name
+          let formData = new FormData()
+          formData.append('image', file)
+          formData.append('name', file.name)
+          this.imageService.uploadInService(formData, this.service.id)
+          .then((newId: number) => {
+               this.loadService(this.service.id).then(() => {
+               }).catch(err=>console.error(err))
+          }).catch(err=>console.error(err))
+     }
+
+     
+
+
+
+     deleteImageFromServiceDialogVisible: boolean = false
+     deleteImageFromServiceDialogImage: AppImage
+
+     deleteImageFromServiceDialogOpen(image: AppImage) {
+          this.deleteImageFromServiceDialogImage = image
+          this.deleteImageFromServiceDialogVisible = true
+     }
+
+     deleteImageFromServiceDialogConfirm() {
+          this.imageService.deleteInService(this.service.id, this.deleteImageFromServiceDialogImage.id)
+          .then(() => {
+               this.loadService(this.service.id).then(() => {
+                    this.deleteImageFromServiceDialogDiscard()
+               }).catch(err=>console.error(err))
+          }).catch(err=>console.error(err))
+     }
+
+     deleteImageFromServiceDialogDiscard() {
+          this.deleteImageFromServiceDialogImage = null
+          this.deleteImageFromServiceDialogVisible = false
+     }
+
+
+     incrementImagePriority(image: any) {
+          this.imageService.updateImagePriorityInService(this.service.id, image.id, image.priority+1).then(() => {
+               this.loadService(this.service.id).then(() => {
+
+               }).catch(err => console.error(err))
+          }).catch(err=>console.error(err))
+     }
+
+     decrementImagePriority(image: any) {
+          this.imageService.updateImagePriorityInService(this.service.id, image.id, image.priority-1).then(() => {
+               this.loadService(this.service.id).then(() => {
+
+               }).catch(err => console.error(err))
+          }).catch(err=>console.error(err))
+     }
 }
