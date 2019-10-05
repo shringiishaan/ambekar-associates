@@ -35,6 +35,16 @@ export class ProjectsService {
     })
   }
 
+  getArticleData(projectId: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.rest.API_URI+this.API_APPEND+'/article/'+projectId)
+      .subscribe((data:any) => {
+        if(data && data.success) resolve(data.articleData)
+        else reject(data.error)
+      })
+    })
+  }
+
   createNew(project: Project): Promise<number> {
     return new Promise((resolve, reject) => {
       this.http.post(this.rest.API_URI+this.API_APPEND+'/new', {project:project})

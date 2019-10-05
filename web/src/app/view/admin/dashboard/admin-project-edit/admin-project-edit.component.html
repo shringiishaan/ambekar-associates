@@ -133,8 +133,26 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="form-group">
+                        <button class="btn btn-sm btn-outline-info float-right" (click)="isArticleEditMode=true" *ngIf="!isArticleEditMode">
+                          <i class="fa fa-edit mr-1"></i>
+                          Edit
+                        </button>
+                        <button class="btn btn-sm btn-success float-right" (click)="save_project_article_changes()" *ngIf="isArticleEditMode">
+                          <i class="fa fa-save mr-1"></i>
+                          Save Changes
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary float-right mr-2" (click)="discard_project_article_changes()" *ngIf="isArticleEditMode">
+                          <i class="fa fa-times mr-1"></i>
+                          Discard Changes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group">
                         <label>Article</label>
-                        <textarea rows="20" class="form-control" [(ngModel)]="articleData"></textarea>
+                        <textarea rows="20" class="form-control" [(ngModel)]="articleData" [disabled]="!isArticleEditMode"></textarea>
                       </div>
                       <!-- <quill-editor [(ngModel)]="project.long_description" [modules]="{
                                                           toolbar: [

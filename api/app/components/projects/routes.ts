@@ -54,7 +54,7 @@ router.get("/article/:projectId", (req: Request, res: Response) => {
         db.getArticleData(projectId).then((article: string) => {
             res.status(200).json({
                 success: true,
-                article: article
+                articleData: article
             })
         }).catch((error) => {
             logger.error(toErrorString(req, error))

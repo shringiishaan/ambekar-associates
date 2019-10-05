@@ -53,6 +53,7 @@ export class AdminProjectEditComponent implements OnInit {
                }
                else {
                     this.loadProject(projectId)
+                    this.loadProjectArticleData(projectId)
                }
           })
      }
@@ -63,6 +64,15 @@ export class AdminProjectEditComponent implements OnInit {
                .then((project: Project) => {
                     this.project = project
                     this.project_completion_time_edit = this.project.completionTime?new Date(this.project.completionTime):null
+                    resolve()
+               }).catch(err=>reject(err))
+          })
+     }
+
+     loadProjectArticleData(projectId: number): Promise<void> {
+          return new Promise((resolve, reject) => {
+               this.projectsService.getArticleData(projectId).then((data: string) => {
+                    this.articleData = data
                     resolve()
                }).catch(err=>reject(err))
           })
@@ -83,6 +93,18 @@ export class AdminProjectEditComponent implements OnInit {
      discard_project_changes() {
           this.loadProject(this.project.id).then(() => {
                this.isGeneralEditMode = false
+          }).catch(err=>console.error(err))
+     }
+
+     save_project_article_changes() {
+          this.projectsService.updateArticleData(this.project.id, this.articleData).then(() => {
+               this.discard_project_article_changes()
+          }).catch(err=>console.error(err))
+     }
+
+     discard_project_article_changes() {
+          this.loadProjectArticleData(this.project.id).then(() => {
+               this.isArticleEditMode = false
           }).catch(err=>console.error(err))
      }
 
