@@ -11,7 +11,7 @@ import { ProjectsService } from "src/app/services/projects.service"
 })
 export class AdminProjectsComponent implements OnInit {
 
-     projects: Project[] = []
+     projects: Project[]
 
      constructor(
           public rest: RestService,
@@ -24,6 +24,7 @@ export class AdminProjectsComponent implements OnInit {
      }
 
      loadProjects() {
+          this.projects = null
           return new Promise((resolve, reject) => {
                this.projectsService.getAll().then((projects:Project[]) => {
                     this.projects = projects

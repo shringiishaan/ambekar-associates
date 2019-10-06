@@ -12,7 +12,7 @@ import { ProjectCategoriesService } from 'src/app/services/project-categories.se
 
 export class AdminProjectCategoriesComponent implements OnInit {
 
-     projectCategories: ProjectCategory[] = []
+     projectCategories: ProjectCategory[]
 
      constructor(
           public projectCategoriesService: ProjectCategoriesService,
@@ -25,6 +25,7 @@ export class AdminProjectCategoriesComponent implements OnInit {
      }
 
      reloadCategories() {
+          this.projectCategories = null
           return new Promise((resolve, reject) => {
                this.projectCategoriesService.getAll().then((categories:ProjectCategory[]) => {
                     this.projectCategories = categories

@@ -14,7 +14,7 @@
                          </button>
                          <h4 class="text-light">
                               <i class="fa fa-users mr-2"></i>
-                              Manage Clients ({{clients.length}})
+                              Manage Clients ({{clients?.length}})
                          </h4>
                     </div>
                </div>
@@ -48,6 +48,14 @@
                               </div>
                          </div>
                     </div>
+                    <div class="col-12 text-center py-3" *ngIf="!clients">
+                         <i class="fa fa-spinner"></i>
+                    </div>
+                    <div class="col-12 text-center" *ngIf="clients && !clients.length">
+                         <div class="card card-body py-3">
+                              (No clients available)
+                         </div>
+                    </div>
                </div>
           </div>
      </div>
@@ -67,10 +75,12 @@
           New Client
      </p-header>
 
-     <input class="form-control" type="text" [(ngModel)]="new_client.name" />
+     <label class="mt-2">Client Name</label>
+     <input class="form-control" type="text" placeholder="Client Name" [(ngModel)]="new_client.name" />
 
-     <button class="btn btn-sm btn-success mt-3" (click)="new_client_submit()">
-          Create
+     <button class="btn btn-sm btn-outline-success float-right mt-3 mb-2" (click)="new_client_submit()">
+          <i class="fa fa-plus mr-1"></i>
+          Create New
      </button>
 
 </p-dialog>
@@ -89,12 +99,15 @@
           Edit Client
      </p-header>
 
-     <input class="form-control" type="text" [(ngModel)]="edit_client.name" />
+     <label class="mt-2">Client Name</label>
+     <input class="form-control" placeholder="Client Name" type="text" [(ngModel)]="edit_client.name" />
 
-     <input class="form-control" type="number" [(ngModel)]="edit_client.priority" />
+     <label class="mt-2">Priority</label>
+     <input class="form-control" placeholder="Priority" type="number" [(ngModel)]="edit_client.priority" />
 
-     <button class="btn btn-sm btn-success mt-3" (click)="edit_client_confirm()">
-          Save
+     <button class="btn btn-sm btn-outline-success float-right mt-3 mb-2" (click)="edit_client_confirm()">
+          <i class="fa fa-save mr-1"></i>
+          Save Changes
      </button>
 
 </p-dialog>
@@ -113,10 +126,11 @@
           Delete Client
      </p-header>
 
-     <h5 class="text-center">{{delete_client.name}}</h5>
+     <p>Delete client <b>{{delete_client.name}}</b> from application?</p>
 
-     <button class="btn btn-sm btn-danger mt-3" (click)="delete_client_confirm()">
-          Delete
+     <button class="btn btn-sm btn-outline-danger float-right mt-3 mb-2" (click)="delete_client_confirm()">
+          <i class="fa fa-trash mr-1"></i>
+          Confirm Delete
      </button>
 
 </p-dialog>

@@ -11,7 +11,7 @@ import { ServicesService } from "src/app/services/services.service";
 
 export class AdminServicesComponent implements OnInit {
 
-  services: Service[] = []
+  services: Service[]
 
   constructor(
     public adminS: AdminService,
@@ -23,6 +23,7 @@ export class AdminServicesComponent implements OnInit {
   }
 
   loadServices(): Promise<void> {
+    this.services = null
     return new Promise((resolve, reject) => {
       this.servicesService.getAll().then((services: Service[]) => {
         this.services = services

@@ -14,7 +14,7 @@ import { AppImagesService } from "src/app/services/images.service";
 
 export class AdminCarouselComponent implements OnInit {
 
-  carousels: Carousel[] = []
+  carousels: Carousel[]
 
   constructor(
     public rest: RestService,
@@ -28,6 +28,7 @@ export class AdminCarouselComponent implements OnInit {
   }
 
   loadCarousels(): Promise<void> {
+    this.carousels = null
     return new Promise((resolve, reject) => {
       this.carouselService.getAll().then(c=>this.carousels=c)
       .then(() => resolve())

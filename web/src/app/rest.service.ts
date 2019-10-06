@@ -7,7 +7,8 @@ import { HttpClient } from '@angular/common/http';
 
 export class RestService {
 
-    API_URI: string = "http://139.59.2.78:7001/rest"
+    // API_URI: string = "http://139.59.2.78:7001/rest"
+    API_URI: string = "http://localhost:7001/rest"
 
     constructor(
         public http: HttpClient

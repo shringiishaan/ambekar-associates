@@ -7,6 +7,30 @@ const DATABASE_NAME = 'ambekar-associates'
 const TABLE_NAME = 'services'
 const IMAGE_TABLE_NAME = 'service_images'
 
+const DEFAULT_ARTICLE_DATA = `<h3>Main Heading</h3>
+<hr />
+<p>Paragrah text is contained within 'p' tags. An horizontal division line can be formed using 'hr' tag.</p>
+<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 
+The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 
+'Content here, content here', making it look like readable English.</p>
+<h5>Sub Heading</h5>
+<p>Some other text formats include <b>Bold text</b>, <i>Italic Text</i> and <u>Underlined Text</u>.
+<h5>Unordered List</h5>
+<p>Bullet points are contained within 'ul' tags and points are enclosed in 'li' tags each.</p>
+<ul>
+	<li>Point One</li>
+	<li>Point Two</li>
+	<li>Point Three</li>
+</ul>
+<h5>Ordered List</h5>
+<p>Numbered points are contained within 'ol' tags and points are enclosed in 'li' tags each.</p>
+<ol>
+	<li>Point One</li>
+	<li>Point Two</li>
+	<li>Point Three</li>
+</ol>
+<p>You can also provide a hiperlink to a page within this website or even some other website. Example <a href="http://www.google.com">click here</a> to visit 'www.google.com'.</p>`
+
 class ServiceController {
 
     getById = (serviceId: number): Promise<Service> => {
@@ -101,7 +125,7 @@ class ServiceController {
     createNew = (service: Service): Promise<number> => {
         return new Promise((resolve, reject) => {
             let sql = "INSERT INTO `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` (`title`, `priority`, `articleData`) VALUES (?, ?, ?);"
-            db.query(sql, [service.title, service.priority, '<p>Enter article data</p>'], (error:MysqlError|null, results: any) => {
+            db.query(sql, [service.title, service.priority, DEFAULT_ARTICLE_DATA], (error:MysqlError|null, results: any) => {
                 if(error || !results.insertId) reject(error)
                 else resolve(results.insertId)
             })

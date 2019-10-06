@@ -15,7 +15,7 @@
                          </button>
                          <h4 class="text-light">
                               <i class="fa fa-picture-o mr-2"></i>
-                              Gallery ({{appImages.length}})
+                              Gallery ({{appImages?.length}})
                          </h4>
                     </div>
                </div>
@@ -36,6 +36,14 @@
                               </div>
                          </div>
                     </div>
+                    <div class="col-12 text-center py-3" *ngIf="!appImages">
+                         <i class="fa fa-spinner"></i>
+                    </div>
+                    <div class="col-12 text-center" *ngIf="appImages && !appImages.length">
+                         <div class="card card-body py-3">
+                              (No images available)
+                         </div>
+                    </div>
                </div>
           </div>
      </div>
@@ -50,23 +58,23 @@
      [positionTop]="100">
 
      <p-header>
-          Delete Image?
+          Delete Image
      </p-header>
 
      <div class="container-fluid" *ngIf="delete_image_file">
           <div class="row">
                <div class="col-12">
-                    <p class="text-dark">{{delete_image_file.name}}</p>
-                    <p class="text-dark">
-                         If you delete this image, it will be removed from projects and services if in use.
+                    <p>Delete image <b>{{delete_image_file.name}}</b> from application?</p>
+                    <p>
+                         It will also be removed from projects and services if already in use.
                     </p>
                </div>
           </div>
           <div class="row text-right mt-3 mb-2">
                <div class="col-12">
-                    <button class="btn btn-danger btn-sm" (click)="delete_app_image_dialog_submit()">
+                    <button class="btn btn-outline-danger btn-sm" (click)="delete_app_image_dialog_submit()">
                          <i class="fa fa-trash mr-1"></i>
-                         Delete
+                         Confirm Delete
                     </button>
                </div>
           </div>

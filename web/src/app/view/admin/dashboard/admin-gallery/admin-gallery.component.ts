@@ -13,7 +13,7 @@ import { AppImagesService } from 'src/app/services/images.service';
 
 export class AdminGalleryComponent implements OnInit {
 
-     appImages: AppImage[] = []
+     appImages: AppImage[]
 
      constructor(
           public rest: RestService,
@@ -28,6 +28,7 @@ export class AdminGalleryComponent implements OnInit {
      }
 
      updateAppImages() {
+          this.appImages = null
           return new Promise((resolve, reject) => {
                this.imageService.getAll().then((images: AppImage[]) => {
                     this.appImages = images

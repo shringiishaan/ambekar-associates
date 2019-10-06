@@ -19,7 +19,7 @@
       </div>
       <div class="row mt-4">
         <div class="col-12 col-md-6">
-          <table class="table table-hover table-dark">
+          <table class="table table-hover table-dark text-light">
             <thead>
               <tr>
                 <th>
@@ -48,6 +48,16 @@
                   </button>
                 </td>
               </tr>
+              <tr *ngIf="!projectCategories">
+                <td colspan="3" class="text-center">
+                  <i class="fa fa-spinner"></i>
+                </td>
+              </tr>
+              <tr *ngIf="projectCategories && !projectCategories.length">
+                <td colspan="3" class="text-center">
+                  (No categories available)
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -70,14 +80,14 @@
   </p-header>
 
   <div class="container-fluid">
-    <div class="row">
+    <div class="row mt-2">
       <div class="col-12">
-        <input class="form-control" type="text" [(ngModel)]="new_category_name" />
+        <input class="form-control" type="text" placeholder="Category Name" [(ngModel)]="new_category_name" />
       </div>
     </div>
     <div class="row mt-3 mb-2">
       <div class="col-12 text-right">
-        <button class="btn btn-sm btn-success" (click)="new_category_submit()">
+        <button class="btn btn-sm btn-outline-success" (click)="new_category_submit()">
             <i class="fa fa-check mr-1"></i>
             Save
         </button>
@@ -103,12 +113,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          {{delete_project_category.name}}
+          <p>Delete category <b>{{delete_project_category.name}}</b> from application?</p>
+          <p>All projects in this category will move to 'no category' section.</p>
         </div>
       </div>
       <div class="row mt-3 mb-2">
         <div class="col-12 text-right">
-          <button class="btn btn-sm btn-danger" (click)="delete_project_category_confirm()">
+          <button class="btn btn-sm btn-outline-danger" (click)="delete_project_category_confirm()">
               <i class="fa fa-trash mr-1"></i>
               Delete
           </button>
@@ -128,25 +139,25 @@
     *ngIf="edit_project_category">
 
     <p-header>
-      Edit Project Category
+      Edit Category
     </p-header>
 
     <div class="container-fluid">
-      <div class="row">
+      <div class="row mt-2">
         <div class="col-12">
           <input class="form-control" type="text" [(ngModel)]="edit_project_category.name" />
         </div>
       </div>
-      <div class="row">
+      <div class="row mt-2">
         <div class="col-12">
           <input class="form-control" type="number" [(ngModel)]="edit_project_category.priority" />
         </div>
       </div>
       <div class="row mt-3 mb-2">
         <div class="col-12 text-right">
-          <button class="btn btn-sm btn-success" (click)="edit_project_category_confirm()">
+          <button class="btn btn-sm btn-outline-success" (click)="edit_project_category_confirm()">
               <i class="fa fa-check mr-1"></i>
-              Save
+              Save Changes
           </button>
         </div>
       </div>

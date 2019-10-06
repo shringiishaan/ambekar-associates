@@ -61,3 +61,25 @@ input:focus, textarea:focus, select:focus {
  }
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+
+
+.ui-dialog, .ui-dialog-titlebar {
+  border-color:#000 !important;
+  background: #343A40 !important;
+  color:#ccc !important;
+}
+
+.ui-dialog-content, .ui-widget-content {
+  border-color:#000 !important;
+  background: #333 !important;
+  color:#ccc !important;
+}
+
+
+
+
+.ui-datepicker,.ui-monthpicker,.ui-monthpicker-month {
+  color: #333;
+  background: #fff;
+}

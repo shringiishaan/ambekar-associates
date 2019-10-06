@@ -14,7 +14,7 @@ import { AppImage } from 'src/app/models/app-image.model';
 
 export class AdminClientsComponent implements OnInit {
 
-     clients: Client[] = []
+     clients: Client[]
 
      constructor(
           public adminS: AdminService,
@@ -29,6 +29,7 @@ export class AdminClientsComponent implements OnInit {
 
 
      loadClients(): Promise<void> {
+          this.clients = null
           return new Promise((resolve, reject) => {
                this.clientsService.getAll().then(c=>{
                     this.clients=c
