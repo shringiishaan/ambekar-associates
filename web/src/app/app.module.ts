@@ -33,6 +33,7 @@ import { AdminNavbarComponent } from './view/admin/admin-navbar/admin-navbar.com
 import { AdminLgMenuComponent } from './view/admin/admin-lg-menu/admin-lg-menu.component';
 import { AdminProjectEditComponent } from './view/admin/dashboard/admin-project-edit/admin-project-edit.component';
 import { AdminServiceEditComponent } from './view/admin/dashboard/admin-service-edit/admin-service-edit.component';
+import { GalleryDialogComponent } from './view/admin/gallery-dialog/gallery-dialog.component';
 
 @NgModule({
 
@@ -58,7 +59,8 @@ import { AdminServiceEditComponent } from './view/admin/dashboard/admin-service-
         AdminNavbarComponent,
         AdminLgMenuComponent,
         AdminProjectEditComponent,
-        AdminServiceEditComponent
+        AdminServiceEditComponent,
+        GalleryDialogComponent
     ],
 
     imports: [

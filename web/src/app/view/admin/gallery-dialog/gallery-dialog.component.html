@@ -1,0 +1,41 @@
+<p-dialog 
+     [(visible)]="galleryDialogService.visible"
+     [modal]="true"
+     [blockScroll]="true"
+     [dismissableMask]="true"
+     [showHeader]="true"
+     [positionTop]="100"
+     [width]="700">
+
+     <p-header>
+        Image Gallery
+     </p-header>
+
+     <div class="container-fluid" style="max-height:300px;overflow-y:auto;">
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-3 pb-3" *ngFor="let image of galleryDialogService.images">
+                <div class="card" (click)="galleryDialogService.selectImage(image)" [ngStyle]="{'cursor':'pointer','border':galleryDialogService.selectedImage?.id===image.id?'2px solid blue':null}">
+                    <img src="{{rest.API_URI}}/images/one/{{image.id}}" class="card-img-top" alt="Image" />
+                    <div class="card-body px-2 pb-1 pt-2">
+                          <div class="row">
+                              <div class="col-12">
+                                    <small class="text-light">{{image.name}}</small>
+                              </div>
+                          </div>
+                    </div>
+                </div>
+          </div>
+       </div>
+     </div>
+
+    <p-footer>
+        <div class="row">
+            <div class="col-12">
+                <button [disabled]="!!!galleryDialogService.selectedImage" class="btn btn-sm btn-success mt-3" (click)="galleryDialogService.submitSelect()">
+                    Select Image
+                </button>
+            </div>
+        </div>
+    </p-footer>
+
+</p-dialog>

@@ -14,26 +14,36 @@
                          </button>
                          <h4 class="text-light">
                               <i class="fa fa-users mr-2"></i>
-                              Manage Clients
+                              Manage Clients ({{clients.length}})
                          </h4>
                     </div>
                </div>
                <div class="row mt-4">
-                    <div class="col-12 col-md-6 col-lg-3" *ngFor="let client of appState.state.clients">
-                         <div class="card card-body p-2">
-                              <img src="{{rest.API_URI}}/image/{{client.image_key}}" style="max-height:15em;" />
-                              <div class="row">
-                                   <div class="col-12">
-                                        <i class="fa fa-trash text-warning float-right" style="cursor: pointer;font-size:1.5em;" (click)="delete_client_dialog_open(client)"></i>
-                                        <i class="fa fa-edit text-info float-right mr-2 mt-1" style="cursor: pointer;font-size:1.4em;" (click)="edit_client_dialog_open(client)"></i>
-                                        <small class="text-muted">Client Name</small>
-                                        <p class="text-dark">{{client.name}}</p>
-                                   </div>
-                              </div>
-                              <div class="row">
-                                   <div class="col-12">
-                                        <small class="text-muted">Image Key</small>
-                                        <p class="text-dark">{{client.image_key}}</p>
+                    <div class="col-12 col-md-6 col-lg-3" *ngFor="let client of clients">
+                         <div class="card card-body p-0">
+                              <img class="w-100" src="{{rest.API_URI}}/images/one/{{client.imageId}}" />
+                              <div class="row m-0 p-0">
+                                   <div class="col-12 p-2">
+                                        <button class="btn btn-sm btn-outline-danger float-right" (click)="delete_client_dialog_open(client)">
+                                             <i class="fa fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-info float-right mr-2" (click)="edit_client_dialog_open(client)">
+                                             <i class="fa fa-edit"></i>
+                                        </button>
+                                        <p>{{client.name}}</p>
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary" type="button" (click)="decrementPriority(client)">
+                                              <i class="fa fa-caret-down"></i>
+                                            </button>
+                                          </div>
+                                          <input disabled="true" class="form-control" name="priority" [value]="client.priority" type="number" />
+                                          <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button" (click)="incrementPriority(client)">
+                                              <i class="fa fa-caret-up"></i>
+                                            </button>
+                                          </div>
+                                        </div>
                                    </div>
                               </div>
                          </div>
@@ -49,7 +59,7 @@
      [blockScroll]="true"
      [dismissableMask]="true"
      [showHeader]="true"
-     [positionTop]="150"
+     [positionTop]="100"
      [width]="300"
      *ngIf="new_client">
 
@@ -59,9 +69,9 @@
 
      <input class="form-control" type="text" [(ngModel)]="new_client.name" />
 
-     <input class="form-control mt-2" type="text" [(ngModel)]="new_client.image_key" />
-
-     <button class="btn btn-sm btn-info mt-3" (click)="new_client_submit()">Create</button>
+     <button class="btn btn-sm btn-success mt-3" (click)="new_client_submit()">
+          Create
+     </button>
 
 </p-dialog>
 
@@ -71,7 +81,7 @@
      [blockScroll]="true"
      [dismissableMask]="true"
      [showHeader]="true"
-     [positionTop]="150"
+     [positionTop]="100"
      [width]="300"
      *ngIf="edit_client">
 
@@ -81,9 +91,11 @@
 
      <input class="form-control" type="text" [(ngModel)]="edit_client.name" />
 
-     <input class="form-control mt-2" type="text" [(ngModel)]="edit_client.image_key" />
+     <input class="form-control" type="number" [(ngModel)]="edit_client.priority" />
 
-     <button class="btn btn-sm btn-info mt-3" (click)="edit_client_confirm()">Confirm</button>
+     <button class="btn btn-sm btn-success mt-3" (click)="edit_client_confirm()">
+          Save
+     </button>
 
 </p-dialog>
 
@@ -93,7 +105,7 @@
      [blockScroll]="true"
      [dismissableMask]="true"
      [showHeader]="true"
-     [positionTop]="150"
+     [positionTop]="100"
      [width]="300"
      *ngIf="delete_client">
 
@@ -103,6 +115,8 @@
 
      <h5 class="text-center">{{delete_client.name}}</h5>
 
-     <button class="btn btn-sm btn-danger mt-3" (click)="delete_client_confirm()">Delete</button>
+     <button class="btn btn-sm btn-danger mt-3" (click)="delete_client_confirm()">
+          Delete
+     </button>
 
 </p-dialog>

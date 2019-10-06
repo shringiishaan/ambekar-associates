@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import EmblaCarousel from 'embla-carousel'
+import { Carousel } from 'src/app/models/carousel.model'
+import { AppImagesService } from 'src/app/services/images.service'
+import { CarouselService } from 'src/app/services/carousel.service'
 
 @Component({
      selector: 'carousel',
@@ -19,9 +22,19 @@ export class CarouselComponent implements OnInit {
 
      activityOnCarousel: boolean = false
 
-     constructor() { }
+     carousels: Carousel[] = []
+
+     constructor(
+          public carouselService: CarouselService
+     ) { }
 
      ngOnInit() {
+          this.loadCarousels().then(() => {
+               this.initializeCarousel()
+          }).catch(err=>console.error(err))
+     }
+
+     initializeCarousel() {
           const embla = EmblaCarousel(document.getElementById('carousel'), {
                align: 'center',
                containerSelector: '.cr-container',
@@ -52,6 +65,16 @@ export class CarouselComponent implements OnInit {
                if(!this.activityOnCarousel)
                     embla.scrollNext()
           }, this.movementInterval)
+     }
+
+     loadCarousels(): Promise<void> {
+          return new Promise((resolve, reject) => {
+               this.carouselService.getAll().then(c=>{
+                    this.carousels=c
+                    resolve()
+               })
+               .catch(err=>reject(err))
+          })
      }
 
      ngOnDestroy() {

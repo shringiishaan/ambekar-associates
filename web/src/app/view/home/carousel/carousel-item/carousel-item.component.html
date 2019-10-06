@@ -1,14 +1,12 @@
-<div class="text-white">
+<div class="text-white" *ngIf="carousel">
      <div class="row p-5">
           <div class="col-12 col-lg-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/project-logo" />
+               <img class="w-100" src="{{rest.API_URI}}/images/one/{{carousel.imageId}}" />
           </div>
           <div class="col-12 col-lg-8 pt-4 pt-lg-0">
-               <h3>Project Name</h3>
+               <h3>{{carousel.title}}</h3>
                <hr class="bg-light" />
-               <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam alias eligendi explicabo suscipit eaque sunt velit et. Iusto id autem enim, magni reiciendis rerum a veniam cupiditate? Corporis, quisquam praesentium!
-               </p>
+               <p>{{carousel.description}}</p>
           </div>
      </div>
 </div>

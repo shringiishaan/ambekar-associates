@@ -5,6 +5,8 @@ import { AppImage } from "../../models/app-image.model"
 import multer from 'multer'
 import path from 'path'
 import fs from 'fs'
+import { Carousel } from "../../models/carousel.model"
+import { Client } from "../../models/client.model"
 
 let toErrorString = (req:Request, error:string) => {
     return "AppImagesRouter ["+req.url+"] : "+error
@@ -176,6 +178,48 @@ router.post("/delete/:appImageId", (req: Request, res: Response) => {
     }
 })
 
+router.post("/addImageInProject", (req: Request, res: Response) => {
+    let appImageId: number = req.body.appImageId
+    let projectId: number = req.body.projectId
+    if(Number.isInteger(appImageId) && appImageId && Number.isInteger(projectId) && projectId) {
+        db.newInProject(projectId, appImageId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : projectId || appImageId'
+        })
+    }
+})
+
+router.post("/addImageInService", (req: Request, res: Response) => {
+    let appImageId: number = req.body.appImageId
+    let serviceId: number = req.body.serviceId
+    if(Number.isInteger(appImageId) && appImageId && Number.isInteger(serviceId) && serviceId) {
+        db.newInService(serviceId, appImageId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : serviceId || appImageId'
+        })
+    }
+})
+
 router.post("/deleteInProject/:projectId/:appImageId", (req: Request, res: Response) => {
     let appImageId: number = parseInt(req.params.appImageId)
     let projectId: number = parseInt(req.params.projectId)
@@ -258,6 +302,156 @@ router.post("/updatePriorityInService/:serviceId/:appImageId", (req: Request, re
         res.status(200).json({
             success: false,
             error: 'Invalid parameter : serviceId||appImageId||priority'
+        })
+    }
+})
+
+
+
+router.get("/getAllCarousels", (req: Request, res: Response) => {
+    db.getAllCarousels().then((carousels:Carousel[]) => {
+        res.status(200).json({success: true, carousels:carousels})
+    }).catch((error) => {
+        logger.error(toErrorString(req, error))
+        res.status(200).json({
+            success: false,
+            error: error
+        })
+    })
+})
+
+router.post("/newCarousel", (req: Request, res: Response) => {
+    let carousel: Carousel = req.body.carousel
+    if(carousel) {
+        db.newCarousel(carousel).then((newId:number) => {
+            res.status(200).json({success: true, newCarouselId:newId})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : carousel'
+        })
+    }
+})
+
+router.post("/updateCarousel", (req: Request, res: Response) => {
+    let carousel: Carousel = req.body.carousel
+    if(carousel) {
+        db.updateCarousel(carousel).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : carousel'
+        })
+    }
+})
+
+router.post("/deleteCarousel", (req: Request, res: Response) => {
+    let carouselId: number = req.body.carouselId
+    if(carouselId && Number.isInteger(carouselId)) {
+        db.deleteCarousel(carouselId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : carouselId'
+        })
+    }
+})
+
+
+
+
+
+router.get("/getAllClients", (req: Request, res: Response) => {
+    db.getAllClients().then((clients:Client[]) => {
+        res.status(200).json({success: true, clients:clients})
+    }).catch((error) => {
+        logger.error(toErrorString(req, error))
+        res.status(200).json({
+            success: false,
+            error: error
+        })
+    })
+})
+
+router.post("/newClient", (req: Request, res: Response) => {
+    let client: Client = req.body.client
+    if(client) {
+        db.newClient(client).then((newId:number) => {
+            res.status(200).json({success: true, newClientId:newId})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : client'
+        })
+    }
+})
+
+router.post("/updateClient", (req: Request, res: Response) => {
+    let client: Client = req.body.client
+    if(client) {
+        db.updateClient(client).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : client'
+        })
+    }
+})
+
+router.post("/deleteClient", (req: Request, res: Response) => {
+    let clientId: number = req.body.clientId
+    if(clientId && Number.isInteger(clientId)) {
+        db.deleteClient(clientId).then(() => {
+            res.status(200).json({success: true})
+        }).catch((error) => {
+            logger.error(toErrorString(req, error))
+            res.status(200).json({
+                success: false,
+                error: error
+            })
+        })
+    } else {
+        res.status(200).json({
+            success: false,
+            error: 'Invalid parameter : clientId'
         })
     }
 })

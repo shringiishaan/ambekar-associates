@@ -50,13 +50,16 @@
      [positionTop]="100">
 
      <p-header>
-          Delete Image
+          Delete Image?
      </p-header>
 
      <div class="container-fluid" *ngIf="delete_image_file">
           <div class="row">
                <div class="col-12">
                     <p class="text-dark">{{delete_image_file.name}}</p>
+                    <p class="text-dark">
+                         If you delete this image, it will be removed from projects and services if in use.
+                    </p>
                </div>
           </div>
           <div class="row text-right mt-3 mb-2">

@@ -66,6 +66,26 @@ export class AppImagesService {
     })
   }
 
+  addImageInProject(projectId: number, appImageId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/addImageInProject', {projectId:projectId,appImageId:appImageId})
+      .subscribe((data:any) => {
+        if(data && data.success) resolve()
+        else reject(data.error)
+      })
+    })
+  }
+
+  addImageInService(serviceId: number, appImageId: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.rest.API_URI+this.API_APPEND+'/addImageInService', {serviceId:serviceId,appImageId:appImageId})
+      .subscribe((data:any) => {
+        if(data && data.success) resolve()
+        else reject(data.error)
+      })
+    })
+  }
+
   deleteInService(serviceId: number, appImageId: number): Promise<number> {
     return new Promise((resolve, reject) => {
       this.http.post(this.rest.API_URI+this.API_APPEND+'/deleteInService/'+serviceId+'/'+appImageId, null)

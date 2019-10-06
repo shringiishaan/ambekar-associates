@@ -8,6 +8,7 @@ import { RestService } from 'src/app/rest.service';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { ProjectCategoriesService } from 'src/app/services/project-categories.service';
 import { AppImagesService } from 'src/app/services/images.service';
+import { GalleryDialogService } from '../../gallery-dialog/gallery-dialog.service';
 
 declare var $:any
 
@@ -40,7 +41,8 @@ export class AdminProjectEditComponent implements OnInit {
           public router: Router,
           public projectsService: ProjectsService,
           public projectCategroiesService: ProjectCategoriesService,
-          public imageService: AppImagesService
+          public imageService: AppImagesService,
+          public galleryService: GalleryDialogService
      ) { }
 
      ngOnInit() {
@@ -82,6 +84,21 @@ export class AdminProjectEditComponent implements OnInit {
           if(this.subscription)
           this.subscription.unsubscribe()
      }
+
+
+     addImageFromGallery() {
+          this.galleryService.open(() => {
+               let image: AppImage = this.galleryService.selectedImage
+               if(image) {
+                    this.imageService.addImageInProject(this.project.id, image.id).then(() => {
+                         this.loadProject(this.project.id).then(() => {
+                              this.galleryService.close()
+                         })
+                    }).catch(err=>console.error(err))
+               }
+          })
+     }
+
 
      save_project_changes() {
           this.project.completionTime = new Date(this.project_completion_time_edit).getTime()

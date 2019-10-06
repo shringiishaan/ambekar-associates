@@ -6,6 +6,7 @@ import { AppImage } from 'src/app/models/app-image.model';
 import { RestService } from 'src/app/rest.service';
 import { ServicesService } from 'src/app/services/services.service';
 import { AppImagesService } from 'src/app/services/images.service';
+import { GalleryDialogService } from '../../gallery-dialog/gallery-dialog.service';
 
 declare var $:any
 
@@ -35,7 +36,8 @@ export class AdminServiceEditComponent implements OnInit {
           public route: ActivatedRoute,
           public router: Router,
           public servicesService: ServicesService,
-          public imageService: AppImagesService
+          public imageService: AppImagesService,
+          public galleryService: GalleryDialogService
      ) { }
 
      ngOnInit() {
@@ -114,6 +116,21 @@ export class AdminServiceEditComponent implements OnInit {
                this.loadService(this.service.id).then(() => {
                }).catch(err=>console.error(err))
           }).catch(err=>console.error(err))
+     }
+
+     
+
+     addImageFromGallery() {
+          this.galleryService.open(() => {
+               let image: AppImage = this.galleryService.selectedImage
+               if(image) {
+                    this.imageService.addImageInService(this.service.id, image.id).then(() => {
+                         this.loadService(this.service.id).then(() => {
+                              this.galleryService.close()
+                         })
+                    }).catch(err=>console.error(err))
+               }
+          })
      }
 
      
