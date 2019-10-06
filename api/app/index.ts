@@ -2,7 +2,7 @@ import app from "./app"
 import {logger} from './logger'
 
 const HOST = "0.0.0.0"
-const PORT = 3000
+const PORT = 7001
 
 app.listen(PORT, HOST, () => {
     console.log("API Server listening on " + PORT)

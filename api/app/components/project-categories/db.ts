@@ -34,8 +34,10 @@ class ProjectCategoryController {
             db.query("SELECT MAX(`priority`)+1 AS `priority` FROM `"+DATABASE_NAME+"`.`"+TABLE_NAME+"`", (error:MysqlError|null, results: any) => {
                 if(error || !results) reject(error)
                 else {
+                    let priority: number = parseInt(results[0].priority)
+                    if(!priority) priority = 1
                     let sql = "INSERT INTO `"+DATABASE_NAME+"`.`"+TABLE_NAME+"` (`name`, `priority`) VALUES (?, ?);"
-                    db.query(sql, [projectCategory.name, parseInt(results[0].priority)], (error:MysqlError|null, results: any) => {
+                    db.query(sql, [projectCategory.name, priority], (error:MysqlError|null, results: any) => {
                         if(error || !results.insertId) reject(error)
                         else resolve(results.insertId)
                     })

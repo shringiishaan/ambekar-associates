@@ -7,20 +7,9 @@ import { HttpClient } from '@angular/common/http';
 
 export class RestService {
 
-    API_URI: string = "http://localhost:3000/rest"
+    API_URI: string = "http://139.59.2.78:7001/rest"
 
     constructor(
         public http: HttpClient
     ) { }
-
-    postCall(data: string): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.http.post('http://hostname:port/rest/', {data}).subscribe((response: any) => {
-                if(response.error) {
-                    reject(response.error)
-                }
-                else resolve(response)
-            })
-        })
-    }
 }

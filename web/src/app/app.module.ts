@@ -34,6 +34,12 @@ import { AdminLgMenuComponent } from './view/admin/admin-lg-menu/admin-lg-menu.c
 import { AdminProjectEditComponent } from './view/admin/dashboard/admin-project-edit/admin-project-edit.component';
 import { AdminServiceEditComponent } from './view/admin/dashboard/admin-service-edit/admin-service-edit.component';
 import { GalleryDialogComponent } from './view/admin/gallery-dialog/gallery-dialog.component';
+import { ProjectComponent } from './view/project/project.component';
+import { FooterComponent } from './view/footer/footer.component';
+import { ProjectsComponent } from './view/projects/projects.component';
+import { SearchBarComponent } from './view/search-bar/search-bar.component';
+import { ServiceComponent } from './view/service/service.component';
+import { NavbarComponent } from './view/navbar/navbar.component';
 
 @NgModule({
 
@@ -60,7 +66,13 @@ import { GalleryDialogComponent } from './view/admin/gallery-dialog/gallery-dial
         AdminLgMenuComponent,
         AdminProjectEditComponent,
         AdminServiceEditComponent,
-        GalleryDialogComponent
+        GalleryDialogComponent,
+        ProjectComponent,
+        ProjectsComponent,
+        SearchBarComponent,
+        ServiceComponent,
+        FooterComponent,
+        NavbarComponent
     ],
 
     imports: [

@@ -9,7 +9,7 @@ import { AdminServiceEditComponent } from './view/admin/dashboard/admin-service-
 
 const routes: Routes = [
     
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
 
     { path: 'home', component: HomeComponent },
 
