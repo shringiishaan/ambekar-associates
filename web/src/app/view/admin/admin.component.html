@@ -1,6 +1,6 @@
 <admin-login *ngIf="!adminS.login" (login_validation_success)="login_validation_success()"></admin-login>
 
-<ng-container *ngIf="adminS.login">
+<div class="container-fluid m-0 p-0" style="height:100%;width:100%;background-color:#232e3f;" *ngIf="adminS.login">
      
      <dashboard *ngIf="adminS.current_page==='dashboard'"></dashboard>
 
@@ -16,4 +16,4 @@
 
      <admin-gallery *ngIf="adminS.current_page==='gallery'"></admin-gallery>
 
-</ng-container>
+</div>
