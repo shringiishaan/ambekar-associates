@@ -1,10 +1,12 @@
 .container-fluid {
-     background: #222222;
+     background: #29648a;
 }
 
 .header-text {
      font-family: 'Saira', sans-serif;
      letter-spacing: 1.5px;
-     color: white;
+     color: #ddd;
      font-weight: 400;
+     margin:0px;
+     padding: 0.8em 0px;
 }
