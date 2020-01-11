@@ -18,8 +18,6 @@ import { TopNavbarComponent } from './view/top-navbar/top-navbar.component';
 import { HomeServicesComponent } from './view/home/home-services/home-services.component';
 import { SubHeaderComponent } from './view/sub-header/sub-header.component';
 import { SubNavbarComponent } from './view/sub-navbar/sub-navbar.component';
-import { CarouselComponent } from './view/home/carousel/carousel.component';
-import { CarouselItemComponent } from './view/home/carousel/carousel-item/carousel-item.component';
 import { ProjectsShowcaseComponent } from './view/projects-showcase/projects-showcase.component';
 import { AdminComponent } from './view/admin/admin.component';
 import { DashboardComponent } from './view/admin/dashboard/dashboard.component';
@@ -40,6 +38,8 @@ import { ProjectsComponent } from './view/projects/projects.component';
 import { SearchBarComponent } from './view/search-bar/search-bar.component';
 import { ServiceComponent } from './view/service/service.component';
 import { NavbarComponent } from './view/navbar/navbar.component';
+import { CarouselComponent } from './view/home/carousel/carousel.component';
+import { CarouselItemComponent } from './view/home/carousel-1/carousel-item/carousel-item.component';
 
 @NgModule({
 

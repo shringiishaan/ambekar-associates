@@ -1,9 +1,27 @@
-<div class="container-fluid">
-     <div id="carousel">
-          <div class="cr-container">
-               <div class="cr-slide" *ngFor="let carousel of carousels">
-                    <carousel-item [carousel]="carousel"></carousel-item>
-               </div>
-          </div>
-     </div>
+<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel" *ngIf="carousels && carousels.length">
+  <ol class="carousel-indicators">
+      <li *ngFor="let carousel of carousels; let i = index" data-target="#carouselExampleIndicators" attr.data-slide-to="{{i}}" [ngClass]="{'active':i===0}"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item" *ngFor="let carousel of carousels; let i = index" [ngClass]="{'active':(i===0)}">
+      <img class="d-block w-100" src="{{rest.API_URI}}/images/one/{{carousel.imageId}}" alt="First slide">
+      <div class="carousel-caption d-none d-md-block">
+        <h4 *ngIf="carousel.title">{{carousel.title}}</h4>
+        <p *ngIf="carousel.description">{{carousel.description}}</p>
+      </div>
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+<div class="row" *ngIf="!carousels">
+  <div class="col-12 py-5 text-center">
+    <i class="fa fa-spinner"></i>
+  </div>
 </div>

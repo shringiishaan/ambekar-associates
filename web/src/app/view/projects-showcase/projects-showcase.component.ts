@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from 'src/app/rest.service';
+import { Project } from 'src/app/models/project.model';
+import { ProjectsService } from 'src/app/services/projects.service';
 
 declare var $: any
 
@@ -13,11 +15,24 @@ export class ProjectsShowcaseComponent implements OnInit {
 
      active_project_category: string
 
+     projects: Project[]
+
      constructor(
-          public rest: RestService
+          public rest: RestService,
+          public projectsService: ProjectsService
      ) { }
 
      ngOnInit() {
+          this.loadProjects().catch(err=>console.error(err))
+     }
+
+     loadProjects(): Promise<void> {
+          return new Promise((resolve, reject) => {
+               this.projectsService.getAll().then((ps) => {
+                    this.projects = ps
+                    resolve()
+               }).catch(err => reject(err))
+          })
      }
 
      select_option(option: string) {

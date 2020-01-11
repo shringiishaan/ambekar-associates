@@ -1,83 +1,47 @@
-import { Component, OnInit } from '@angular/core'
-import EmblaCarousel from 'embla-carousel'
-import { Carousel } from 'src/app/models/carousel.model'
-import { AppImagesService } from 'src/app/services/images.service'
-import { CarouselService } from 'src/app/services/carousel.service'
+import { Component, OnInit } from '@angular/core';
+import { Carousel } from 'src/app/models/carousel.model';
+import { CarouselService } from 'src/app/services/carousel.service';
+import { RestService } from 'src/app/rest.service';
+
+declare var $:any
 
 @Component({
-     selector: 'carousel',
-     templateUrl: './carousel.component.html',
-     styleUrls: ['./carousel.component.css']
+  selector: 'carousel',
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.css']
 })
-
 export class CarouselComponent implements OnInit {
 
-     active: boolean = true
+  carousels: Carousel[] = []
 
-     movement
+  constructor(
+       public carouselService: CarouselService,
+       public rest: RestService
+  ) { }
 
-     movementInterval: number = 3000
+  ngOnInit() {
+    this.loadCarousels().then(() => {
+    }).catch(err=>console.error(err))
+  }
 
-     waitTimeBeforeMovement: number = 5000
+  ngAfterViewInit() {
+    setTimeout(() => {
+      $('.carousel').carousel({
+        interval: 2000
+      }, 100)
+    })
+    // setInterval(() => {
+    //   $('.carousel').carousel('next')
+    // }, 500)
+  }
 
-     activityOnCarousel: boolean = false
-
-     carousels: Carousel[] = []
-
-     constructor(
-          public carouselService: CarouselService
-     ) { }
-
-     ngOnInit() {
-          this.loadCarousels().then(() => {
-               this.initializeCarousel()
-          }).catch(err=>console.error(err))
-     }
-
-     initializeCarousel() {
-          const embla = EmblaCarousel(document.getElementById('carousel'), {
-               align: 'center',
-               containerSelector: '.cr-container',
-               slidesToScroll: 1,
-               containScroll: true,
-               draggable: true,
-               dragFree: false,
-               loop: true,
-               speed: 10,
-               startIndex: 0,
-               selectedClass: 'is-selected',
-               draggableClass: 'is-draggable',
-               draggingClass: 'is-dragging',
-          })
-
-          let onActivity = () => {
-               this.activityOnCarousel = true
-               setTimeout(() => {
-                    this.activityOnCarousel = false
-               }, this.waitTimeBeforeMovement)
-          }
-          
-          // embla.on(new Event('click'), onActivity)
-          embla.on('dragStart', onActivity)
-
-          if(this.active)
-          this.movement = setInterval(() => {
-               if(!this.activityOnCarousel)
-                    embla.scrollNext()
-          }, this.movementInterval)
-     }
-
-     loadCarousels(): Promise<void> {
-          return new Promise((resolve, reject) => {
-               this.carouselService.getAll().then(c=>{
-                    this.carousels=c
-                    resolve()
-               })
-               .catch(err=>reject(err))
-          })
-     }
-
-     ngOnDestroy() {
-          clearInterval(this.movement)
-     }
+  loadCarousels(): Promise<void> {
+       return new Promise((resolve, reject) => {
+            this.carouselService.getAll().then(c=>{
+                 this.carousels=c
+                 resolve()
+            })
+            .catch(err=>reject(err))
+       })
+  }
 }

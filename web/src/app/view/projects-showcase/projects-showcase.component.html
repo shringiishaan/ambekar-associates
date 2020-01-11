@@ -23,72 +23,9 @@
           </div>
      </div>
      <div class="row pt-lg-4 project-list">
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
-               <div class="description-text d-block text-center">December, 2018</div>
-          </div>
-          <div class="col-3">
-               <img class="w-100" src="{{rest.API_URI}}/image/{{imageId}}" alt="..." />
+          <div class="col-3" *ngFor="let project of projects">
+               <img class="w-100" src="{{rest.API_URI}}/images/one/{{project.imageIds[0].id}}" alt="..." />
+               <div class="description-text d-block text-center">{{project.title}}</div>
                <div class="description-text d-block text-center">December, 2018</div>
           </div>
      </div>
