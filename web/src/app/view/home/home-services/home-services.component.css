@@ -1,5 +1,7 @@
 
 .service-section img {
+     height:100px;
+     object-fit: cover;
      cursor: pointer;
      display: inline-block;
      position: relative;

@@ -1,8 +1,10 @@
-
-
 .header-text {
      font-family: 'Saira', sans-serif;
      letter-spacing: 1.5px;
-     color: white;
+     color: #ddd;
      font-weight: 400;
+}
+
+p {
+     color: #ddd !important;
 }

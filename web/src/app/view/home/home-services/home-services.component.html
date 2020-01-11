@@ -1,6 +1,6 @@
 <div class="container">
      <div class="row text-center no-gutters">
-          <div class="col-6 col-md-3 px-2 px-md-3 py-3 px-lg-5 mx-auto" *ngFor="let service of services">
+          <div class="col-6 col-md-3 px-2 px-md-3 py-3 px-0 mx-auto" *ngFor="let service of services">
                <div class="text-center service-section" routerLink="/service/{{service.id}}">
                     <img class="w-100" src="{{rest.API_URI}}/images/one/{{service.imageIds[0]?service.imageIds[0].id:''}}" />
                     <h5 class="mt-3 text-light">{{service.title}}</h5>
