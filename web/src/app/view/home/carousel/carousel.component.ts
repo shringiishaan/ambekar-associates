@@ -27,7 +27,7 @@ export class CarouselComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       $('.carousel').carousel({
-        interval: 2000
+        interval: 4000
       }, 100)
     })
     // setInterval(() => {

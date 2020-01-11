@@ -4,10 +4,12 @@
   </ol>
   <div class="carousel-inner">
     <div class="carousel-item" *ngFor="let carousel of carousels; let i = index" [ngClass]="{'active':(i===0)}">
-      <img class="d-block w-100" src="{{rest.API_URI}}/images/one/{{carousel.imageId}}" alt="First slide">
+      <div class="carousel-shade d-block">
+        <img class="d-block w-100" src="{{rest.API_URI}}/images/one/{{carousel.imageId}}" alt="First slide">
+      </div>
       <div class="carousel-caption d-none d-md-block">
-        <h4 *ngIf="carousel.title">{{carousel.title}}</h4>
-        <p *ngIf="carousel.description">{{carousel.description}}</p>
+        <h4 class="is-title" *ngIf="carousel.title">{{carousel.title}}</h4>
+        <p class="is-description" *ngIf="carousel.description">{{carousel.description}}</p>
       </div>
     </div>
   </div>
