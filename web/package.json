@@ -27,7 +27,7 @@
     "core-js": "^2.5.4",
     "embla-carousel": "^2.5.2",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "primeicons": "^2.0.0",
     "primeng": "^8.0.3",
